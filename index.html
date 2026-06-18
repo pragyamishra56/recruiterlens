@@ -206,7 +206,7 @@
     <div class="title">📄 Resume Feedback</div>
     <div class="role-section">
   <label class="role-label">Enter your Groq API Key:</label>
-  <input type="password" id="apiKeyInput" 
+  <input type="text" id="apiKeyInput" 
     placeholder="paste your Groq API key here" 
     style="width:100%; padding:10px; border:1.5px solid #a0aec0; 
     border-radius:8px; font-size:14px; margin-bottom:16px;">
@@ -243,7 +243,9 @@
   </div>
 
   <script>
-    const GROQ_API_KEY = document.getElementById('apiKeyInput').value;
+    const GROQ_API_KEY = document.getElementById('apiKeyInput').value.trim();
+    console.log('Key length:', GROQ_API_KEY.length);
+console.log('Key starts with:', GROQ_API_KEY.substring(0, 6));
     pdfjsLib.GlobalWorkerOptions.workerSrc =
       'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     let resumeText = '';
