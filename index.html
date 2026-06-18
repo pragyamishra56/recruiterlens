@@ -280,11 +280,23 @@
       };
       reader.readAsArrayBuffer(file);
     });
+    // analyzeBtn.addEventListener('click', async function() {
+    //   if (!resumeText) {
+    //     alert('Please upload your resume PDF first!');
+    //     return;
+    //   }
     analyzeBtn.addEventListener('click', async function() {
-      if (!resumeText) {
-        alert('Please upload your resume PDF first!');
-        return;
-      }
+  //const GROQ_API_KEY = document.getElementById('apiKeyInput').value.trim();
+  
+  if (!GROQ_API_KEY) {
+    alert('Please enter your Groq API key first!');
+    return;
+  }
+
+  if (!resumeText) {
+    alert('Please upload your resume PDF first!');
+    return;
+  }
       analyzeBtn.innerHTML = '⏳ Analyzing...';
       analyzeBtn.style.background = '#a0aec0';
       analyzeBtn.disabled = true;
