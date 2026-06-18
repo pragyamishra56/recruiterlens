@@ -243,9 +243,7 @@
   </div>
 
   <script>
-    const GROQ_API_KEY = document.getElementById('apiKeyInput').value.trim();
-    console.log('Key length:', GROQ_API_KEY.length);
-console.log('Key starts with:', GROQ_API_KEY.substring(0, 6));
+    
     pdfjsLib.GlobalWorkerOptions.workerSrc =
       'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
     let resumeText = '';
@@ -288,12 +286,17 @@ console.log('Key starts with:', GROQ_API_KEY.substring(0, 6));
     //     return;
     //   }
     analyzeBtn.addEventListener('click', async function() {
-  //const GROQ_API_KEY = document.getElementById('apiKeyInput').value.trim();
+    const GROQ_API_KEY = document.getElementById('apiKeyInput').value.trim();
   
   if (!GROQ_API_KEY) {
     alert('Please enter your Groq API key first!');
     return;
   }
+      
+      if (!GROQ_API_KEY.startsWith('gsk_')) {
+        alert('Invalid key! Groq API keys start with gsk_');
+        return;
+      }
 
   if (!resumeText) {
     alert('Please upload your resume PDF first!');
