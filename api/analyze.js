@@ -6,6 +6,15 @@ module.exports = async function handler(req, res) {
   const { resumeText, role } = req.body;
 
   try {
+    const cleanText = resumeText
+      .replace(/[^\x20-\x7E]/g, ' ')
+      .substring(0, 1500);
+
+    const prompt = `You are a recruiter hiring for a ${role} role. Analyze this resume and reply ONLY in this exact JSON format with no extra text:
+{"score": 70, "feedback": [{"type": "error", "text": "problem here"}, {"type": "error", "text": "problem here"}, {"type": "warning", "text": "warning here"}, {"type": "warning", "text": "warning here"}, {"type": "success", "text": "good thing here"}, {"type": "success", "text": "good thing here"}]}
+
+Resume: ${cleanText}`;
+
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -14,12 +23,9 @@ module.exports = async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'llama-3.1-8b-instant',
-        messages: [{
-          role: 'user',
-          content: 'You are a recruiter hiring for a ' + role + ' role. Analyze this resume for that specific role and reply ONLY in JSON format like this: {"score": 70, "feedback": [{"type": "error", "text": "problem here"}, {"type": "warning", "text": "warning here"}, {"type": "success", "text": "good thing here"}]}. Give 2 errors, 2 warnings, 2 successes. Be specific to THIS resume and THIS role. Resume: ' + resumeText.substring(0, 1500)
-        }],
+        messages: [{ role: 'user', content: prompt }],
         max_tokens: 1000,
-        temperature: 0.7
+        temperature: 0.3
       })
     });
 
