@@ -345,23 +345,32 @@
       loadingText.innerHTML = '🤖 AI is reading your resume...';
 
       try {
-        const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + GROQ_API_KEY
-          },
+        // const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //     'Authorization': 'Bearer ' + GROQ_API_KEY
+        //   },
+        const response = await fetch('/api/analyze', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+          // body: JSON.stringify({
+          //   model: 'llama-3.1-8b-instant',
+          //   messages: [{
+          //     role: 'user',
+          //     content: 'You are a recruiter hiring for a ' + 
+          //       document.getElementById('roleSelect').value + 
+          //       ' role. Analyze this resume for that specific role and reply ONLY in JSON format like this: {"score": 70, "feedback": [{"type": "error", "text": "problem here"}, {"type": "warning", "text": "warning here"}, {"type": "success", "text": "good thing here"}]}. Give 2 errors, 2 warnings, 2 successes. Be specific to THIS resume and THIS role. Resume: ' + 
+          //       resumeText.substring(0, 1500)
+          //   }],
+          //   max_tokens: 1000,
+          //   temperature: 0.7
+          // })
           body: JSON.stringify({
-            model: 'llama-3.1-8b-instant',
-            messages: [{
-              role: 'user',
-              content: 'You are a recruiter hiring for a ' + 
-                document.getElementById('roleSelect').value + 
-                ' role. Analyze this resume for that specific role and reply ONLY in JSON format like this: {"score": 70, "feedback": [{"type": "error", "text": "problem here"}, {"type": "warning", "text": "warning here"}, {"type": "success", "text": "good thing here"}]}. Give 2 errors, 2 warnings, 2 successes. Be specific to THIS resume and THIS role. Resume: ' + 
-                resumeText.substring(0, 1500)
-            }],
-            max_tokens: 1000,
-            temperature: 0.7
+            resumeText: resumeText,
+            role: document.getElementById('roleSelect').value
           })
         });
 
