@@ -61,18 +61,29 @@ app.get('/auth/callback', async (req, res) => {
 
     const user = userResponse.data;
 
-    // Save user in session
-    req.session.user = {
-      id: user.id,
-      name: user.name || user.login,
-      username: user.login,
-      avatar: user.avatar_url,
-      email: user.email
-    };
-
+    // Save user in session *****
+    // req.session.user = {
+    //   id: user.id,
+    //   name: user.name || user.login,
+    //   username: user.login,
+    //   avatar: user.avatar_url,
+    //   email: user.email
+    // };
+  
     // Redirect back to frontend
     //res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
-    res.redirect(`${process.env.FRONTEND_URL}`);
+    //res.redirect(`${process.env.FRONTEND_URL}`);
+
+    // Pass user data in URL
+      const userData = encodeURIComponent(JSON.stringify({
+         id: user.id,
+         name: user.name || user.login,
+         username: user.login,
+         avatar: user.avatar_url,
+         email: user.email
+      }));
+
+res.redirect(`${process.env.FRONTEND_URL}?user=${userData}`);
 
   } catch (err) {
     console.error('Auth error:', err);
