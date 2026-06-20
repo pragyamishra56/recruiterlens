@@ -6,8 +6,15 @@ require('dotenv').config();
 
 const app = express();
 
+// app.use(cors({
+//   origin: process.env.FRONTEND_URL,
+//   credentials: true
+// }));
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
+  origin: [
+    process.env.FRONTEND_URL,
+    'https://recruiterlens-green.vercel.app'
+  ],
   credentials: true
 }));
 
@@ -64,7 +71,8 @@ app.get('/auth/callback', async (req, res) => {
     };
 
     // Redirect back to frontend
-    res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
+    //res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
+    res.redirect(`${process.env.FRONTEND_URL}`);
 
   } catch (err) {
     console.error('Auth error:', err);
