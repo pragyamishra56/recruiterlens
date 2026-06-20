@@ -188,6 +188,71 @@
     .success { background: #f0fff4; color: #276749; }
     .loading-text { text-align: center; color: #6c63ff; font-size: 14px; margin-top: 12px; }
 
+/* HISTORY  */
+.history-section {
+  background: white;
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 20px;
+}
+
+.history-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #1a1a2e;
+  margin-bottom: 16px;
+}
+
+.history-empty {
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+  padding: 20px;
+}
+
+.history-item {
+  border: 1.5px solid #f0f4ff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  transition: all 0.3s;
+}
+
+.history-item:hover {
+  border-color: #6c63ff;
+  box-shadow: 0 2px 12px rgba(108,99,255,0.1);
+}
+
+.history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.history-role {
+  font-size: 14px;
+  font-weight: bold;
+  color: #1a1a2e;
+}
+
+.history-score {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.history-date {
+  font-size: 11px;
+  color: #aaa;
+  margin-bottom: 8px;
+}
+
+.history-feedback {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.6;
+}
+
     /* FOOTER */
     .footer { margin-top: 32px; padding: 24px 0 8px 0; border-top: 2px solid #f0f4ff; text-align: center; }
     .footer-brand { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 4px; }
@@ -291,6 +356,16 @@
       </div>
     </div>
 
+    <!-- HISTORY SECTION -->
+<div class="history-section" id="historySection">
+  <div class="history-title">📊 Your Resume History</div>
+  <div id="historyList">
+    <div class="history-empty">
+      No analyses yet — upload your resume above!
+    </div>
+  </div>
+</div>
+
     <!-- FOOTER -->
     <div class="footer">
       <div class="footer-brand">
@@ -342,6 +417,58 @@
     //     showLogin();
     //   }
     // }
+
+    async function loadHistory() {
+  if (!currentUser) return;
+
+  try {
+    const res = await fetch(`${BACKEND}/api/history/${currentUser.id}`);
+    const data = await res.json();
+
+    const historyList = document.getElementById('historyList');
+
+    if (!data.history || data.history.length === 0) {
+      historyList.innerHTML = `
+        <div class="history-empty">
+          No analyses yet — upload your resume above!
+        </div>`;
+      return;
+    }
+
+    historyList.innerHTML = data.history.map(item => {
+      const date = new Date(item.created_at).toLocaleDateString('en-IN', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+
+      const scoreColor = item.score >= 70 ? '#48bb78' :
+                        item.score >= 50 ? '#ed8936' : '#e53e3e';
+
+      const topFeedback = item.feedback.slice(0, 2).map(f =>
+        `${f.type === 'error' ? '❌' : f.type === 'warning' ? '⚠️' : '✅'} ${f.text}`
+      ).join('<br>');
+
+      return `
+        <div class="history-item">
+          <div class="history-header">
+            <div class="history-role">🎯 ${item.role}</div>
+            <div class="history-score" style="color:${scoreColor}">
+              ${item.score}/100
+            </div>
+          </div>
+          <div class="history-date">📅 ${date}</div>
+          <div class="history-feedback">${topFeedback}</div>
+        </div>`;
+    }).join('');
+
+  } catch (err) {
+    console.log('History load error:', err);
+  }
+}
+
+
+    
     function checkAuth() {
   try {
     // Check URL for user data after GitHub login
@@ -378,12 +505,19 @@
       document.getElementById('appPage').style.display = 'none';
     }
 
-    function showApp(user) {
-      document.getElementById('loginPage').style.display = 'none';
-      document.getElementById('appPage').style.display = 'block';
-      document.getElementById('userName').textContent = user.name;
-      document.getElementById('userAvatar').src = user.avatar;
-    }
+    // function showApp(user) {
+    //   document.getElementById('loginPage').style.display = 'none';
+    //   document.getElementById('appPage').style.display = 'block';
+    //   document.getElementById('userName').textContent = user.name;
+    //   document.getElementById('userAvatar').src = user.avatar;
+    // }
+      function showApp(user) {
+       document.getElementById('loginPage').style.display = 'none';
+       document.getElementById('appPage').style.display = 'block';
+       document.getElementById('userName').textContent = user.name;
+       document.getElementById('userAvatar').src = user.avatar;
+       loadHistory();
+     }
 
     // async function logout() {
     //   await fetch(`${BACKEND}/auth/logout`, { credentials: 'include' });
@@ -486,6 +620,28 @@
             ${item.type === 'error' ? '❌' : item.type === 'warning' ? '⚠️' : '✅'} ${item.text}
           </div>`
         ).join('');
+// Save to database
+if (currentUser) {
+  try {
+    await fetch(`${BACKEND}/api/save-analysis`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId: currentUser.id,
+        role: document.getElementById('roleSelect').value,
+        score: result.score,
+        feedback: result.feedback,
+        resumeText: resumeText.substring(0, 500)
+      })
+    });
+    console.log('Analysis saved!');
+    // Refresh history
+    loadHistory();
+  } catch (err) {
+    console.log('Save error:', err);
+  }
+}
+        
 
       } catch (err) {
         console.log('Error details:', err);
