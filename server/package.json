@@ -11,6 +11,7 @@
     "dotenv": "^16.0.3",
     "axios": "^1.4.0",
     "express-session": "^1.17.3",
-    "@supabase/supabase-js": "^2.38.0"
+    "@supabase/supabase-js": "^2.38.0",
+    "pg": "^8.11.0"
   }
 }
