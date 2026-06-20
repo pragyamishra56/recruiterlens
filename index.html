@@ -325,23 +325,53 @@
     let currentUser = null;
 
     // Check if user is logged in
-    async function checkAuth() {
-      try {
-        const res = await fetch(`${BACKEND}/auth/user`, {
-          credentials: 'include'
-        });
-        const data = await res.json();
+    // async function checkAuth() {
+    //   try {
+    //     const res = await fetch(`${BACKEND}/auth/user`, {
+    //       credentials: 'include'
+    //     });
+    //     const data = await res.json();
 
-        if (data.user) {
-          currentUser = data.user;
-          showApp(data.user);
-        } else {
-          showLogin();
-        }
-      } catch (err) {
-        showLogin();
-      }
+    //     if (data.user) {
+    //       currentUser = data.user;
+    //       showApp(data.user);
+    //     } else {
+    //       showLogin();
+    //     }
+    //   } catch (err) {
+    //     showLogin();
+    //   }
+    // }
+    function checkAuth() {
+  try {
+    // Check URL for user data after GitHub login
+    const urlParams = new URLSearchParams(window.location.search);
+    const userParam = urlParams.get('user');
+
+    if (userParam) {
+      const user = JSON.parse(decodeURIComponent(userParam));
+      // Save in localStorage
+      localStorage.setItem('rl_user', JSON.stringify(user));
+      // Clean URL
+      window.history.replaceState({}, document.title, '/');
+      currentUser = user;
+      showApp(user);
+      return;
     }
+
+    // Check localStorage
+    const saved = localStorage.getItem('rl_user');
+    if (saved) {
+      currentUser = JSON.parse(saved);
+      showApp(currentUser);
+      return;
+    }
+
+    showLogin();
+  } catch (err) {
+    showLogin();
+  }
+}
 
     function showLogin() {
       document.getElementById('loginPage').style.display = 'flex';
@@ -355,11 +385,16 @@
       document.getElementById('userAvatar').src = user.avatar;
     }
 
-    async function logout() {
-      await fetch(`${BACKEND}/auth/logout`, { credentials: 'include' });
-      currentUser = null;
-      showLogin();
-    }
+    // async function logout() {
+    //   await fetch(`${BACKEND}/auth/logout`, { credentials: 'include' });
+    //   currentUser = null;
+    //   showLogin();
+    // }
+      function logout() {
+        localStorage.removeItem('rl_user');
+        currentUser = null;
+        showLogin();
+      }
 
     // File upload
     const uploadBox = document.getElementById('uploadBox');
