@@ -4,12 +4,15 @@ const session = require('express-session');
 const axios = require('axios');
 require('dotenv').config();
 
+const { createClient } = require('@supabase/supabase-js');
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_ANON_KEY
+);
+
 const app = express();
 
-// app.use(cors({
-//   origin: process.env.FRONTEND_URL,
-//   credentials: true
-// }));
 app.use(cors({
   origin: [
     process.env.FRONTEND_URL,
@@ -30,18 +33,16 @@ app.use(session({
   }
 }));
 
-// Step 1 - Redirect to GitHub login
+// GitHub OAuth
 app.get('/auth/github', (req, res) => {
   const githubAuthUrl = `https://github.com/login/oauth/authorize?client_id=${process.env.GITHUB_CLIENT_ID}&scope=user:email`;
   res.redirect(githubAuthUrl);
 });
 
-// Step 2 - GitHub sends user back here
 app.get('/auth/callback', async (req, res) => {
   const { code } = req.query;
 
   try {
-    // Exchange code for access token
     const tokenResponse = await axios.post(
       'https://github.com/login/oauth/access_token',
       {
@@ -54,36 +55,34 @@ app.get('/auth/callback', async (req, res) => {
 
     const accessToken = tokenResponse.data.access_token;
 
-    // Get user info from GitHub
     const userResponse = await axios.get('https://api.github.com/user', {
       headers: { Authorization: `Bearer ${accessToken}` }
     });
 
     const user = userResponse.data;
 
-    // Save user in session *****
-    // req.session.user = {
-    //   id: user.id,
-    //   name: user.name || user.login,
-    //   username: user.login,
-    //   avatar: user.avatar_url,
-    //   email: user.email
-    // };
-  
-    // Redirect back to frontend
-    //res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
-    //res.redirect(`${process.env.FRONTEND_URL}`);
+    // Save user to Supabase
+    const { error } = await supabase
+      .from('users')
+      .upsert({
+        id: user.id,
+        github_username: user.login,
+        name: user.name || user.login,
+        avatar_url: user.avatar_url,
+        email: user.email
+      });
 
-    // Pass user data in URL
-      const userData = encodeURIComponent(JSON.stringify({
-         id: user.id,
-         name: user.name || user.login,
-         username: user.login,
-         avatar: user.avatar_url,
-         email: user.email
-      }));
+    if (error) console.error('User save error:', error);
 
-res.redirect(`${process.env.FRONTEND_URL}?user=${userData}`);
+    const userData = encodeURIComponent(JSON.stringify({
+      id: user.id,
+      name: user.name || user.login,
+      username: user.login,
+      avatar: user.avatar_url,
+      email: user.email
+    }));
+
+    res.redirect(`${process.env.FRONTEND_URL}?user=${userData}`);
 
   } catch (err) {
     console.error('Auth error:', err);
@@ -91,16 +90,51 @@ res.redirect(`${process.env.FRONTEND_URL}?user=${userData}`);
   }
 });
 
-// Get current user
-app.get('/auth/user', (req, res) => {
-  if (req.session.user) {
-    res.json({ user: req.session.user });
-  } else {
-    res.json({ user: null });
+// Save analysis to database
+app.post('/api/save-analysis', async (req, res) => {
+  const { userId, role, score, feedback, resumeText } = req.body;
+
+  try {
+    const { data, error } = await supabase
+      .from('analyses')
+      .insert({
+        user_id: userId,
+        role,
+        score,
+        feedback,
+        resume_text: resumeText
+      })
+      .select();
+
+    if (error) throw error;
+    res.json({ success: true, data });
+
+  } catch (err) {
+    console.error('Save error:', err);
+    res.status(500).json({ error: err.message });
   }
 });
 
-// Logout
+// Get user's analysis history
+app.get('/api/history/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const { data, error } = await supabase
+      .from('analyses')
+      .select('*')
+      .eq('user_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (error) throw error;
+    res.json({ history: data });
+
+  } catch (err) {
+    console.error('History error:', err);
+    res.status(500).json({ error: err.message });
+  }
+});
+
 app.get('/auth/logout', (req, res) => {
   req.session.destroy();
   res.json({ success: true });
