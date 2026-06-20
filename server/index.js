@@ -2,16 +2,47 @@ const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
 const axios = require('axios');
+const { Pool } = require('pg');
 require('dotenv').config();
 
-const { createClient } = require('@supabase/supabase-js');
-
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
-);
-
 const app = express();
+
+// PostgreSQL connection
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+
+// Create tables if not exists
+async function initDB() {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS users (
+        id BIGINT PRIMARY KEY,
+        github_username TEXT UNIQUE NOT NULL,
+        name TEXT,
+        avatar_url TEXT,
+        email TEXT,
+        created_at TIMESTAMP DEFAULT NOW()
+      );
+
+      CREATE TABLE IF NOT EXISTS analyses (
+        id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+        user_id BIGINT REFERENCES users(id),
+        role TEXT NOT NULL,
+        score INTEGER NOT NULL,
+        feedback JSONB NOT NULL,
+        resume_text TEXT,
+        created_at TIMESTAMP DEFAULT NOW()
+      );
+    `);
+    console.log('Database tables ready!');
+  } catch (err) {
+    console.error('DB init error:', err);
+  }
+}
+
+initDB();
 
 app.use(cors({
   origin: [
@@ -61,18 +92,13 @@ app.get('/auth/callback', async (req, res) => {
 
     const user = userResponse.data;
 
-    // Save user to Supabase
-    const { error } = await supabase
-      .from('users')
-      .upsert({
-        id: user.id,
-        github_username: user.login,
-        name: user.name || user.login,
-        avatar_url: user.avatar_url,
-        email: user.email
-      });
-
-    if (error) console.error('User save error:', error);
+    // Save user to PostgreSQL
+    await pool.query(`
+      INSERT INTO users (id, github_username, name, avatar_url, email)
+      VALUES ($1, $2, $3, $4, $5)
+      ON CONFLICT (id) DO UPDATE
+      SET name = $3, avatar_url = $4, email = $5
+    `, [user.id, user.login, user.name || user.login, user.avatar_url, user.email]);
 
     const userData = encodeURIComponent(JSON.stringify({
       id: user.id,
@@ -90,24 +116,18 @@ app.get('/auth/callback', async (req, res) => {
   }
 });
 
-// Save analysis to database
+// Save analysis
 app.post('/api/save-analysis', async (req, res) => {
   const { userId, role, score, feedback, resumeText } = req.body;
 
   try {
-    const { data, error } = await supabase
-      .from('analyses')
-      .insert({
-        user_id: userId,
-        role,
-        score,
-        feedback,
-        resume_text: resumeText
-      })
-      .select();
+    const result = await pool.query(`
+      INSERT INTO analyses (user_id, role, score, feedback, resume_text)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING *
+    `, [userId, role, score, JSON.stringify(feedback), resumeText]);
 
-    if (error) throw error;
-    res.json({ success: true, data });
+    res.json({ success: true, data: result.rows[0] });
 
   } catch (err) {
     console.error('Save error:', err);
@@ -115,19 +135,18 @@ app.post('/api/save-analysis', async (req, res) => {
   }
 });
 
-// Get user's analysis history
+// Get history
 app.get('/api/history/:userId', async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const { data, error } = await supabase
-      .from('analyses')
-      .select('*')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false });
+    const result = await pool.query(`
+      SELECT * FROM analyses
+      WHERE user_id = $1
+      ORDER BY created_at DESC
+    `, [userId]);
 
-    if (error) throw error;
-    res.json({ history: data });
+    res.json({ history: result.rows });
 
   } catch (err) {
     console.error('History error:', err);
@@ -135,6 +154,7 @@ app.get('/api/history/:userId', async (req, res) => {
   }
 });
 
+// Logout
 app.get('/auth/logout', (req, res) => {
   req.session.destroy();
   res.json({ success: true });
