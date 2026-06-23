@@ -1,10 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RecruiterLens — See through a recruiter's eyes</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #f0f4ff; font-family: Arial, sans-serif; min-height: 100vh; }
+
+    body {
+      background: #0f0f0f;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+      color: #ccc;
+      min-height: 100vh;
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #0f0f0f; }
+    ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
+
+    /* ICON SVG */
+    .rl-icon {
+      flex-shrink: 0;
+    }
 
     /* LOGIN PAGE */
     .login-page {
@@ -13,34 +32,41 @@
       align-items: center;
       min-height: 100vh;
       padding: 20px;
+      background: #0f0f0f;
     }
 
     .login-card {
-      background: white;
-      border-radius: 24px;
+      background: #161616;
+      border: 0.5px solid #2a2a2a;
+      border-radius: 16px;
       padding: 48px 40px;
       width: 100%;
-      max-width: 420px;
+      max-width: 400px;
       text-align: center;
-      box-shadow: 0 8px 40px rgba(108,99,255,0.12);
-      animation: fadeIn 0.5s ease;
+      animation: fadeIn 0.4s ease;
     }
 
-    .login-logo {
-      font-size: 48px;
-      margin-bottom: 16px;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .login-icon-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
     }
 
     .login-title {
-      font-size: 28px;
-      font-weight: bold;
-      color: #1a1a2e;
-      margin-bottom: 8px;
+      font-size: 22px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 6px;
     }
 
     .login-subtitle {
-      font-size: 14px;
-      color: #999;
+      font-size: 13px;
+      color: #555;
       margin-bottom: 32px;
       line-height: 1.6;
     }
@@ -49,30 +75,36 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      background: #1a1a2e;
-      color: white;
+      gap: 10px;
+      background: #fff;
+      color: #0f0f0f;
       border: none;
-      padding: 14px 32px;
-      border-radius: 12px;
-      font-size: 16px;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
       width: 100%;
       cursor: pointer;
-      transition: all 0.3s;
+      transition: all 0.2s;
       text-decoration: none;
     }
 
     .github-btn:hover {
-      background: #2d2d4e;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      background: #f0f0f0;
+      transform: translateY(-1px);
+    }
+
+    .login-divider {
+      height: 0.5px;
+      background: #1f1f1f;
+      margin: 28px 0;
     }
 
     .login-features {
-      margin-top: 32px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
+      text-align: left;
     }
 
     .feature-item {
@@ -80,253 +112,497 @@
       align-items: center;
       gap: 10px;
       font-size: 13px;
-      color: #666;
-      text-align: left;
+      color: #555;
     }
 
-    .feature-icon {
-      font-size: 16px;
-      min-width: 24px;
+    .feature-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #7c6fcd;
+      flex-shrink: 0;
     }
 
-    /* MAIN APP PAGE */
+    /* APP PAGE */
     .app-page {
       display: none;
-      padding: 20px 16px;
-      max-width: 560px;
-      margin: 0 auto;
+      min-height: 100vh;
     }
 
     /* NAVBAR */
     .navbar {
+      background: #161616;
+      border-bottom: 0.5px solid #1f1f1f;
+      padding: 0 24px;
+      height: 52px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 16px 0;
-      margin-bottom: 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
 
     .navbar-brand {
-      font-size: 20px;
-      font-weight: bold;
-      color: #6c63ff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #fff;
     }
 
-    .user-info {
+    .navbar-right {
       display: flex;
       align-items: center;
       gap: 10px;
     }
 
     .user-avatar {
-      width: 36px;
-      height: 36px;
+      width: 28px;
+      height: 28px;
       border-radius: 50%;
-      border: 2px solid #6c63ff;
+      border: 1.5px solid #2a2a2a;
     }
 
     .user-name {
-      font-size: 14px;
-      color: #1a1a2e;
-      font-weight: bold;
+      font-size: 13px;
+      color: #888;
     }
 
     .logout-btn {
       font-size: 12px;
-      color: #999;
+      color: #555;
       background: none;
-      border: none;
+      border: 0.5px solid #2a2a2a;
+      padding: 4px 10px;
+      border-radius: 6px;
       cursor: pointer;
-      padding: 4px 8px;
-      border-radius: 4px;
-      transition: all 0.3s;
+      transition: all 0.2s;
     }
 
     .logout-btn:hover {
-      background: #f0f4ff;
-      color: #6c63ff;
+      border-color: #444;
+      color: #888;
     }
 
-    /* MAIN CARD */
+    /* BODY */
+    .app-body {
+      max-width: 660px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    /* HERO */
+    .hero {
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .hero-sub {
+      font-size: 13px;
+      color: #555;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #1a1730;
+      color: #9d8fef;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      border: 0.5px solid #3d3566;
+      margin-top: 10px;
+    }
+
+    /* CARDS */
     .card {
-      background: white;
-      border-radius: 16px;
-      padding: 32px;
+      background: #161616;
+      border: 0.5px solid #1f1f1f;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 500;
+      color: #444;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 12px;
+    }
+
+    /* SELECT */
+    .role-select {
       width: 100%;
-      animation: fadeIn 0.5s ease;
+      background: #0f0f0f;
+      border: 0.5px solid #2a2a2a;
+      color: #ccc;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%23555' d='M5 7L1 3h8z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+    .role-select:focus {
+      outline: none;
+      border-color: #7c6fcd;
     }
 
-    .title { font-size: 24px; font-weight: bold; color: #1a1a2e; margin-bottom: 8px; }
-    .subtitle { font-size: 14px; color: #666; margin-bottom: 8px; }
-    .badge { display: inline-block; background: #e9d8fd; color: #6c63ff; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 20px; }
+    /* UPLOAD */
+    .upload-box {
+      border: 0.5px dashed #2a2a2a;
+      border-radius: 10px;
+      padding: 28px;
+      text-align: center;
+      color: #444;
+      font-size: 13px;
+      cursor: pointer;
+      margin-top: 12px;
+      transition: all 0.2s;
+    }
 
-    .role-section { margin-bottom: 20px; margin-top: 16px; }
-    .role-label { display: block; font-size: 13px; color: #666; margin-bottom: 8px; font-weight: bold; }
-    .role-select { width: 100%; padding: 10px 14px; border: 1.5px solid #a0aec0; border-radius: 8px; font-size: 14px; color: #1a1a2e; background: white; cursor: pointer; transition: all 0.3s; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236c63ff' d='M6 8L1 3h10z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
-    .role-select:focus { outline: none; border-color: #6c63ff; box-shadow: 0 0 0 3px rgba(108,99,255,0.15); }
+    .upload-box:hover {
+      border-color: #7c6fcd;
+      color: #7c6fcd;
+      background: #0d0b1a;
+    }
 
-    .upload-box { border: 2px dashed #a0aec0; border-radius: 12px; padding: 40px; text-align: center; color: #a0aec0; font-size: 14px; cursor: pointer; transition: all 0.3s ease; }
-    .upload-box:hover { border-color: #6c63ff; background: #f5f3ff; color: #6c63ff; }
-    .file-name { font-size: 13px; color: #6c63ff; margin-top: 8px; text-align: center; font-weight: bold; min-height: 20px; }
+    .upload-icon {
+      font-size: 28px;
+      margin-bottom: 8px;
+      display: block;
+    }
 
-    .button { background: #6c63ff; color: white; border: none; padding: 12px 32px; border-radius: 8px; font-size: 16px; margin-top: 16px; width: 100%; cursor: pointer; transition: all 0.3s; }
-    .button:hover { background: #5a52d5; }
+    .file-name {
+      font-size: 12px;
+      color: #7c6fcd;
+      margin-top: 8px;
+      text-align: center;
+      min-height: 18px;
+    }
 
-    .feedback { margin-top: 24px; border-top: 1px solid #eee; padding-top: 20px; display: none; }
-    .score-section { text-align: center; margin-bottom: 20px; }
-    .score-title { font-size: 14px; color: #666; margin-bottom: 4px; }
-    .score-number { font-size: 48px; font-weight: bold; color: #6c63ff; }
-    .score-number span { font-size: 20px; color: #aaa; }
-    .feedback-item { padding: 12px 16px; border-radius: 8px; margin-bottom: 10px; font-size: 14px; line-height: 1.5; }
-    .error { background: #fff5f5; color: #c53030; }
-    .warning { background: #fffaf0; color: #c05621; }
-    .success { background: #f0fff4; color: #276749; }
-    .loading-text { text-align: center; color: #6c63ff; font-size: 14px; margin-top: 12px; }
+    /* BUTTON */
+    .analyze-btn {
+      width: 100%;
+      background: #7c6fcd;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      margin-top: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
 
-/* HISTORY  */
-.history-section {
-  background: white;
-  border-radius: 16px;
-  padding: 24px;
-  margin-top: 20px;
-}
+    .analyze-btn:hover {
+      background: #6a5eb5;
+      transform: translateY(-1px);
+    }
 
-.history-title {
-  font-size: 18px;
-  font-weight: bold;
-  color: #1a1a2e;
-  margin-bottom: 16px;
-}
+    .analyze-btn:disabled {
+      background: #2a2a2a;
+      color: #555;
+      cursor: not-allowed;
+      transform: none;
+    }
 
-.history-empty {
-  text-align: center;
-  color: #aaa;
-  font-size: 14px;
-  padding: 20px;
-}
+    .loading-text {
+      text-align: center;
+      color: #7c6fcd;
+      font-size: 13px;
+      margin-top: 10px;
+      min-height: 20px;
+    }
 
-.history-item {
-  border: 1.5px solid #f0f4ff;
-  border-radius: 12px;
-  padding: 16px;
-  margin-bottom: 12px;
-  transition: all 0.3s;
-}
+    /* SCORE */
+    .score-wrap {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 16px;
+      border-bottom: 0.5px solid #1f1f1f;
+      margin-bottom: 16px;
+    }
 
-.history-item:hover {
-  border-color: #6c63ff;
-  box-shadow: 0 2px 12px rgba(108,99,255,0.1);
-}
+    .score-number {
+      font-size: 52px;
+      font-weight: 600;
+      line-height: 1;
+    }
 
-.history-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
-}
+    .score-meta {
+      flex: 1;
+    }
 
-.history-role {
-  font-size: 14px;
-  font-weight: bold;
-  color: #1a1a2e;
-}
+    .score-label {
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 8px;
+    }
 
-.history-score {
-  font-size: 20px;
-  font-weight: bold;
-}
+    .score-bar-bg {
+      height: 3px;
+      background: #1f1f1f;
+      border-radius: 2px;
+    }
 
-.history-date {
-  font-size: 11px;
-  color: #aaa;
-  margin-bottom: 8px;
-}
+    .score-bar-fill {
+      height: 3px;
+      border-radius: 2px;
+      transition: width 0.8s ease;
+    }
 
-.history-feedback {
-  font-size: 12px;
-  color: #666;
-  line-height: 1.6;
-}
+    /* FEEDBACK ITEMS */
+    .feedback-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 0.5px solid #1a1a1a;
+      font-size: 13px;
+      color: #888;
+      line-height: 1.5;
+    }
+
+    .feedback-item:last-child {
+      border-bottom: none;
+    }
+
+    .feedback-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 10px;
+      margin-top: 1px;
+    }
+
+    .fi-error { background: #1f0f0f; color: #e05252; }
+    .fi-warning { background: #1a1500; color: #c49b2a; }
+    .fi-success { background: #0a1a10; color: #3d9e5f; }
+
+    /* HISTORY */
+    .history-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 0.5px solid #1a1a1a;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .history-item:last-child { border-bottom: none; }
+
+    .history-item:hover .history-role {
+      color: #9d8fef;
+    }
+
+    .history-role {
+      font-size: 14px;
+      color: #ccc;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .history-date {
+      font-size: 11px;
+      color: #444;
+      margin-top: 3px;
+    }
+
+    .history-score {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .history-empty {
+      text-align: center;
+      color: #333;
+      font-size: 13px;
+      padding: 24px 0;
+    }
 
     /* FOOTER */
-    .footer { margin-top: 32px; padding: 24px 0 8px 0; border-top: 2px solid #f0f4ff; text-align: center; }
-    .footer-brand { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 4px; }
-    .footer-logo { font-size: 20px; }
-    .footer-name { font-size: 18px; font-weight: bold; color: #6c63ff; }
-    .footer-tagline { font-size: 12px; color: #999; margin-bottom: 16px; }
-    .footer-links { display: flex; justify-content: center; gap: 16px; margin-bottom: 16px; }
-    .footer-icon { display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; background: #f0f4ff; transition: all 0.3s ease; text-decoration: none; }
-    .footer-icon:hover { background: #e9d8fd; transform: translateY(-2px); }
-    .footer-copy { font-size: 13px; color: #666; margin-bottom: 4px; }
-    .footer-rights { font-size: 11px; color: #bbb; }
+    .footer {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 0.5px solid #1a1a1a;
+      text-align: center;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .footer-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .footer-tagline {
+      font-size: 12px;
+      color: #333;
+      margin-bottom: 16px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .footer-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #161616;
+      border: 0.5px solid #2a2a2a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .footer-icon:hover {
+      border-color: #7c6fcd;
+      transform: translateY(-2px);
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: #333;
+      margin-bottom: 4px;
+    }
+
+    .footer-rights {
+      font-size: 11px;
+      color: #2a2a2a;
+    }
+
+    /* FEEDBACK SECTION HIDDEN */
+    .feedback-section {
+      display: none;
+    }
   </style>
 </head>
 <body>
 
+  <!-- RL ICON SVG DEFINITION -->
+  <svg width="0" height="0" style="position:absolute;">
+    <defs>
+      <symbol id="rl-icon" viewBox="0 0 64 64">
+        <rect width="64" height="64" rx="16" fill="#0f0f0f"/>
+        <text x="9" y="40" font-size="22" fill="#ffffff" font-weight="700" font-family="Arial">R</text>
+        <text x="27" y="40" font-size="22" fill="#7c6fcd" font-weight="700" font-family="Arial">L</text>
+        <rect x="9" y="43" width="14" height="1.5" rx="0.75" fill="#ffffff" opacity="0.15"/>
+        <rect x="27" y="43" width="10" height="1.5" rx="0.75" fill="#7c6fcd" opacity="0.5"/>
+        <circle cx="51" cy="16" r="13" fill="#12102a" stroke="#534AB7" stroke-width="1.2"/>
+        <ellipse cx="51" cy="15.5" rx="7.5" ry="4.5" stroke="#7c6fcd" stroke-width="1.3" fill="none"/>
+        <circle cx="51" cy="15.5" r="3" fill="#7c6fcd"/>
+        <circle cx="52.2" cy="14.3" r="1.2" fill="#0f0f0f"/>
+        <circle cx="49.5" cy="13.8" r="0.7" fill="#9d8fef" opacity="0.8"/>
+        <path d="M57 21 L61 25" stroke="#534AB7" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="61.5" cy="25.5" r="2" fill="#534AB7"/>
+      </symbol>
+    </defs>
+  </svg>
+
   <!-- LOGIN PAGE -->
   <div class="login-page" id="loginPage">
     <div class="login-card">
-      <div class="login-logo">📄</div>
-      <div class="login-title">RecruiterLens</div>
-      <div class="login-subtitle">
-        See your resume through a recruiter's eyes.<br>
-        Get honest AI feedback instantly.
+      <div class="login-icon-wrap">
+        <svg width="72" height="72" class="rl-icon"><use href="#rl-icon"/></svg>
       </div>
+      <div class="login-title">RecruiterLens</div>
+      <div class="login-subtitle">See your resume through a recruiter's eyes.<br>Get honest AI feedback instantly.</div>
 
       <a href="https://recruiterlens-server.onrender.com/auth/github" class="github-btn">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="#0f0f0f">
           <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
         </svg>
         Continue with GitHub
       </a>
 
+      <div class="login-divider"></div>
+
       <div class="login-features">
         <div class="feature-item">
-          <span class="feature-icon">🤖</span>
-          <span>AI analyzes your resume like a real recruiter</span>
+          <div class="feature-dot"></div>
+          AI analyzes your resume like a real recruiter
         </div>
         <div class="feature-item">
-          <span class="feature-icon">🎯</span>
-          <span>Role specific feedback for your target job</span>
+          <div class="feature-dot"></div>
+          Role specific feedback for your target job
         </div>
         <div class="feature-item">
-          <span class="feature-icon">📊</span>
-          <span>Resume score with detailed breakdown</span>
+          <div class="feature-dot"></div>
+          Resume score with detailed breakdown
         </div>
         <div class="feature-item">
-          <span class="feature-icon">🔒</span>
-          <span>Secure login — your data stays private</span>
+          <div class="feature-dot"></div>
+          Track your improvement over time
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MAIN APP PAGE -->
+  <!-- APP PAGE -->
   <div class="app-page" id="appPage">
 
     <!-- NAVBAR -->
-    <div class="navbar">
-      <div class="navbar-brand">📄 RecruiterLens</div>
-      <div class="user-info">
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <svg width="28" height="28" class="rl-icon"><use href="#rl-icon"/></svg>
+        RecruiterLens
+      </div>
+      <div class="navbar-right">
         <img class="user-avatar" id="userAvatar" src="" alt="avatar">
         <span class="user-name" id="userName"></span>
         <button class="logout-btn" onclick="logout()">Logout</button>
       </div>
-    </div>
+    </nav>
 
-    <!-- MAIN CARD -->
-    <div class="card">
-      <div class="title">Resume Feedback</div>
-      <div class="subtitle">Upload your resume and get honest AI recruiter feedback</div>
-      <span class="badge">✨ AI Powered by Groq</span>
+    <!-- BODY -->
+    <div class="app-body">
 
-      <div class="role-section">
-        <label class="role-label">I am applying for:</label>
+      <!-- HERO -->
+      <div class="hero">
+        <div class="hero-title">Resume Feedback</div>
+        <div class="hero-sub">Upload your resume and get honest recruiter feedback</div>
+        <div class="hero-badge">✦ AI powered by Groq</div>
+      </div>
+
+      <!-- UPLOAD CARD -->
+      <div class="card">
+        <div class="card-title">Applying for</div>
         <select class="role-select" id="roleSelect">
           <option value="Fresher Software Developer">Fresher Software Developer</option>
           <option value="Frontend Developer">Frontend Developer</option>
@@ -336,57 +612,67 @@
           <option value="Data Analyst">Data Analyst</option>
           <option value="QA Engineer">QA Engineer</option>
         </select>
-      </div>
 
-      <input type="file" id="fileInput" accept=".pdf" style="display:none">
-      <div class="upload-box" id="uploadBox">
-        📂 Click here to upload your resume PDF
-      </div>
-      <div class="file-name" id="fileName"></div>
-
-      <button class="button" id="analyzeBtn">Analyze My Resume</button>
-      <div class="loading-text" id="loadingText"></div>
-
-      <div class="feedback" id="feedback">
-        <div class="score-section">
-          <div class="score-title">Resume Score</div>
-          <div class="score-number" id="scoreNum">0<span>/100</span></div>
+        <input type="file" id="fileInput" accept=".pdf" style="display:none">
+        <div class="upload-box" id="uploadBox">
+          <span class="upload-icon">📄</span>
+          Click to upload your resume PDF
+          <div style="font-size:11px; color:#333; margin-top:4px;">PDF files only</div>
         </div>
+        <div class="file-name" id="fileName"></div>
+
+        <button class="analyze-btn" id="analyzeBtn">Analyze my resume</button>
+        <div class="loading-text" id="loadingText"></div>
+      </div>
+
+      <!-- FEEDBACK CARD -->
+      <div class="card feedback-section" id="feedbackCard">
+        <div class="card-title">Analysis result</div>
+
+        <div class="score-wrap">
+          <div class="score-number" id="scoreNum">0</div>
+          <div class="score-meta">
+            <div class="score-label" id="scoreLabel">Analyzing...</div>
+            <div class="score-bar-bg">
+              <div class="score-bar-fill" id="scoreBar" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+
         <div id="feedbackItems"></div>
       </div>
-    </div>
 
-    <!-- HISTORY SECTION -->
-<div class="history-section" id="historySection">
-  <div class="history-title">📊 Your Resume History</div>
-  <div id="historyList">
-    <div class="history-empty">
-      No analyses yet — upload your resume above!
-    </div>
-  </div>
-</div>
+      <!-- HISTORY CARD -->
+      <div class="card">
+        <div class="card-title">Analysis history</div>
+        <div id="historyList">
+          <div class="history-empty">No analyses yet — upload your resume above</div>
+        </div>
+      </div>
 
-    <!-- FOOTER -->
-    <div class="footer">
-      <div class="footer-brand">
-        <span class="footer-logo">📄</span>
-        <span class="footer-name">RecruiterLens</span>
+      <!-- FOOTER -->
+      <div class="footer">
+        <div class="footer-brand">
+          <svg width="20" height="20" class="rl-icon"><use href="#rl-icon"/></svg>
+          <span class="footer-name">RecruiterLens</span>
+        </div>
+        <div class="footer-tagline">See through a recruiter's eyes</div>
+        <div class="footer-links">
+          <a href="https://linkedin.com/in/pragya-mishra-070438279" target="_blank" class="footer-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#7c6fcd">
+              <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+            </svg>
+          </a>
+          <a href="https://github.com/pragyamishra56" target="_blank" class="footer-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#7c6fcd">
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+          </a>
+        </div>
+        <div class="footer-copy">Built with ❤️ by <strong style="color:#7c6fcd;">Pragya Mishra</strong></div>
+        <div class="footer-rights">© 2026 RecruiterLens. All Rights Reserved.</div>
       </div>
-      <div class="footer-tagline">See your resume through a recruiter's eyes</div>
-      <div class="footer-links">
-        <a href="https://linkedin.com/in/pragya-mishra-070438279" target="_blank" class="footer-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="black">
-            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
-          </svg>
-        </a>
-        <a href="https://github.com/pragyamishra56" target="_blank" class="footer-icon">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="black">
-            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-          </svg>
-        </a>
-      </div>
-      <div class="footer-copy">Built with ❤️ by <strong>Pragya Mishra</strong></div>
-      <div class="footer-rights">© 2025 RecruiterLens. All Rights Reserved.</div>
+
     </div>
   </div>
 
@@ -399,145 +685,60 @@
     let resumeText = '';
     let currentUser = null;
 
-    // Check if user is logged in
-    // async function checkAuth() {
-    //   try {
-    //     const res = await fetch(`${BACKEND}/auth/user`, {
-    //       credentials: 'include'
-    //     });
-    //     const data = await res.json();
-
-    //     if (data.user) {
-    //       currentUser = data.user;
-    //       showApp(data.user);
-    //     } else {
-    //       showLogin();
-    //     }
-    //   } catch (err) {
-    //     showLogin();
-    //   }
-    // }
-
-    async function loadHistory() {
-  if (!currentUser) return;
-
-  try {
-    const res = await fetch(`${BACKEND}/api/history/${currentUser.id}`);
-    const data = await res.json();
-
-    const historyList = document.getElementById('historyList');
-
-    if (!data.history || data.history.length === 0) {
-      historyList.innerHTML = `
-        <div class="history-empty">
-          No analyses yet — upload your resume above!
-        </div>`;
-      return;
-    }
-
-    historyList.innerHTML = data.history.map(item => {
-      const date = new Date(item.created_at).toLocaleDateString('en-IN', {
-        day: 'numeric',
-        month: 'short',
-        year: 'numeric'
-      });
-
-      const scoreColor = item.score >= 70 ? '#48bb78' :
-                        item.score >= 50 ? '#ed8936' : '#e53e3e';
-
-      const topFeedback = item.feedback.slice(0, 2).map(f =>
-        `${f.type === 'error' ? '❌' : f.type === 'warning' ? '⚠️' : '✅'} ${f.text}`
-      ).join('<br>');
-
-      return `
-        <div class="history-item">
-          <div class="history-header">
-            <div class="history-role">🎯 ${item.role}</div>
-            <div class="history-score" style="color:${scoreColor}">
-              ${item.score}/100
-            </div>
-          </div>
-          <div class="history-date">📅 ${date}</div>
-          <div class="history-feedback">${topFeedback}</div>
-        </div>`;
-    }).join('');
-
-  } catch (err) {
-    console.log('History load error:', err);
-  }
-}
-
-
-    
+    // CHECK AUTH
     function checkAuth() {
-  try {
-    // Check URL for user data after GitHub login
-    const urlParams = new URLSearchParams(window.location.search);
-    const userParam = urlParams.get('user');
-
-    if (userParam) {
-      const user = JSON.parse(decodeURIComponent(userParam));
-      // Save in localStorage
-      localStorage.setItem('rl_user', JSON.stringify(user));
-      // Clean URL
-      window.history.replaceState({}, document.title, '/');
-      currentUser = user;
-      showApp(user);
-      return;
+      try {
+        const urlParams = new URLSearchParams(window.location.search);
+        const userParam = urlParams.get('user');
+        if (userParam) {
+          const user = JSON.parse(decodeURIComponent(userParam));
+          localStorage.setItem('rl_user', JSON.stringify(user));
+          window.history.replaceState({}, document.title, '/');
+          currentUser = user;
+          showApp(user);
+          return;
+        }
+        const saved = localStorage.getItem('rl_user');
+        if (saved) {
+          currentUser = JSON.parse(saved);
+          showApp(currentUser);
+          return;
+        }
+        showLogin();
+      } catch (err) {
+        showLogin();
+      }
     }
-
-    // Check localStorage
-    const saved = localStorage.getItem('rl_user');
-    if (saved) {
-      currentUser = JSON.parse(saved);
-      showApp(currentUser);
-      return;
-    }
-
-    showLogin();
-  } catch (err) {
-    showLogin();
-  }
-}
 
     function showLogin() {
       document.getElementById('loginPage').style.display = 'flex';
       document.getElementById('appPage').style.display = 'none';
     }
 
-    // function showApp(user) {
-    //   document.getElementById('loginPage').style.display = 'none';
-    //   document.getElementById('appPage').style.display = 'block';
-    //   document.getElementById('userName').textContent = user.name;
-    //   document.getElementById('userAvatar').src = user.avatar;
-    // }
-      function showApp(user) {
-       document.getElementById('loginPage').style.display = 'none';
-       document.getElementById('appPage').style.display = 'block';
-       document.getElementById('userName').textContent = user.name;
-       document.getElementById('userAvatar').src = user.avatar;
-       loadHistory();
-     }
+    function showApp(user) {
+      document.getElementById('loginPage').style.display = 'none';
+      document.getElementById('appPage').style.display = 'block';
+      document.getElementById('userName').textContent = user.name;
+      document.getElementById('userAvatar').src = user.avatar;
+      loadHistory();
+    }
 
-    // async function logout() {
-    //   await fetch(`${BACKEND}/auth/logout`, { credentials: 'include' });
-    //   currentUser = null;
-    //   showLogin();
-    // }
-      function logout() {
-        localStorage.removeItem('rl_user');
-        currentUser = null;
-        showLogin();
-      }
+    function logout() {
+      localStorage.removeItem('rl_user');
+      currentUser = null;
+      showLogin();
+    }
 
-    // File upload
+    // FILE UPLOAD
     const uploadBox = document.getElementById('uploadBox');
     const fileInput = document.getElementById('fileInput');
     const fileName = document.getElementById('fileName');
     const analyzeBtn = document.getElementById('analyzeBtn');
-    const feedback = document.getElementById('feedback');
-    const scoreNum = document.getElementById('scoreNum');
     const loadingText = document.getElementById('loadingText');
+    const feedbackCard = document.getElementById('feedbackCard');
+    const scoreNum = document.getElementById('scoreNum');
+    const scoreBar = document.getElementById('scoreBar');
+    const scoreLabel = document.getElementById('scoreLabel');
     const feedbackItems = document.getElementById('feedbackItems');
 
     uploadBox.addEventListener('click', () => fileInput.click());
@@ -556,23 +757,23 @@
           text += content.items.map(item => item.str).join(' ') + '\n';
         }
         resumeText = text;
-        fileName.innerHTML = '✅ ' + file.name + ' ready!';
-        uploadBox.innerHTML = '📄 Resume uploaded — ready to analyze!';
-        uploadBox.style.borderColor = '#6c63ff';
-        uploadBox.style.background = '#f5f3ff';
-        uploadBox.style.color = '#6c63ff';
+        fileName.innerHTML = '✅ ' + file.name + ' ready';
+        uploadBox.style.borderColor = '#7c6fcd';
+        uploadBox.style.color = '#7c6fcd';
+        uploadBox.style.background = '#0d0b1a';
+        uploadBox.innerHTML = '<span class="upload-icon">📄</span>' + file.name + '<div style="font-size:11px; color:#534AB7; margin-top:4px;">Ready to analyze</div>';
       };
       reader.readAsArrayBuffer(file);
     });
 
+    // ANALYZE
     analyzeBtn.addEventListener('click', async function() {
       if (!resumeText) {
         alert('Please upload your resume PDF first!');
         return;
       }
 
-      analyzeBtn.innerHTML = '⏳ Analyzing...';
-      analyzeBtn.style.background = '#a0aec0';
+      analyzeBtn.innerHTML = 'Analyzing...';
       analyzeBtn.disabled = true;
       loadingText.innerHTML = '🤖 AI is reading your resume...';
 
@@ -589,73 +790,109 @@
         const data = await response.json();
 
         if (!data.choices || data.choices.length === 0) {
-          throw new Error('No response — ' + JSON.stringify(data));
+          throw new Error('No response from AI');
         }
 
         const content = data.choices[0].message.content;
         const jsonMatch = content.match(/\{[\s\S]*\}/);
         if (!jsonMatch) throw new Error('AI did not return JSON');
-
         const cleanJson = jsonMatch[0].replace(/[\x00-\x1F\x7F]/g, ' ');
         const result = JSON.parse(cleanJson);
 
-        analyzeBtn.innerHTML = '✅ Analysis Complete';
-        analyzeBtn.style.background = '#48bb78';
-        feedback.style.display = 'block';
+        // Show feedback card
+        feedbackCard.style.display = 'block';
+        analyzeBtn.innerHTML = '✅ Analysis complete';
+        analyzeBtn.style.background = '#1a3a2a';
+        analyzeBtn.style.color = '#3d9e5f';
         loadingText.innerHTML = '';
 
-        let count = 0;
+        // Animate score
         const target = result.score;
+        const color = target >= 70 ? '#3d9e5f' : target >= 50 ? '#c49b2a' : '#e05252';
+        scoreNum.style.color = color;
+        scoreBar.style.background = color;
+        scoreLabel.textContent = document.getElementById('roleSelect').value + ' match';
+
+        let count = 0;
         const counter = setInterval(() => {
           count++;
-          scoreNum.innerHTML = count + '<span>/100</span>';
-          if (count === target) {
-            clearInterval(counter);
-            scoreNum.style.color = target >= 70 ? '#48bb78' : target >= 50 ? '#ed8936' : '#e53e3e';
-          }
-        }, 20);
+          scoreNum.textContent = count;
+          scoreBar.style.width = (count / 100 * 100) + '%';
+          if (count === target) clearInterval(counter);
+        }, 15);
 
-        feedbackItems.innerHTML = result.feedback.map(item =>
-          `<div class="feedback-item ${item.type}">
-            ${item.type === 'error' ? '❌' : item.type === 'warning' ? '⚠️' : '✅'} ${item.text}
-          </div>`
-        ).join('');
-// Save to database
-if (currentUser) {
-  try {
-    await fetch(`${BACKEND}/api/save-analysis`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        userId: currentUser.id,
-        role: document.getElementById('roleSelect').value,
-        score: result.score,
-        feedback: result.feedback,
-        resumeText: resumeText.substring(0, 500)
-      })
-    });
-    console.log('Analysis saved!');
-    // Refresh history
-    loadHistory();
-  } catch (err) {
-    console.log('Save error:', err);
-  }
-}
-        
+        // Feedback items
+        feedbackItems.innerHTML = result.feedback.map(item => {
+          const cls = item.type === 'error' ? 'fi-error' : item.type === 'warning' ? 'fi-warning' : 'fi-success';
+          const icon = item.type === 'error' ? '✕' : item.type === 'warning' ? '!' : '✓';
+          return `<div class="feedback-item">
+            <div class="feedback-icon ${cls}">${icon}</div>
+            <div>${item.text}</div>
+          </div>`;
+        }).join('');
+
+        // Save to database
+        if (currentUser) {
+          try {
+            await fetch(`${BACKEND}/api/save-analysis`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                userId: currentUser.id,
+                role: document.getElementById('roleSelect').value,
+                score: result.score,
+                feedback: result.feedback,
+                resumeText: resumeText.substring(0, 500)
+              })
+            });
+            loadHistory();
+          } catch (err) {
+            console.log('Save error:', err);
+          }
+        }
 
       } catch (err) {
-        console.log('Error details:', err);
-        loadingText.innerHTML = '⚠️ Taking longer than usual... please try again!';
-        setTimeout(function() {
-          analyzeBtn.innerHTML = 'Analyze My Resume';
-          analyzeBtn.style.background = '#6c63ff';
-          analyzeBtn.disabled = false;
-          loadingText.innerHTML = '🔄 Please click Analyze again!';
-        }, 2000);
+        console.log('Error:', err);
+        loadingText.innerHTML = '⚠️ Something went wrong. Please try again.';
+        analyzeBtn.innerHTML = 'Analyze my resume';
+        analyzeBtn.disabled = false;
+        analyzeBtn.style.background = '#7c6fcd';
+        analyzeBtn.style.color = '#fff';
       }
     });
 
-    // Start app
+    // LOAD HISTORY
+    async function loadHistory() {
+      if (!currentUser) return;
+      try {
+        const res = await fetch(`${BACKEND}/api/history/${currentUser.id}`);
+        const data = await res.json();
+        const historyList = document.getElementById('historyList');
+
+        if (!data.history || data.history.length === 0) {
+          historyList.innerHTML = '<div class="history-empty">No analyses yet — upload your resume above</div>';
+          return;
+        }
+
+        historyList.innerHTML = data.history.map(item => {
+          const date = new Date(item.created_at).toLocaleDateString('en-IN', {
+            day: 'numeric', month: 'short', year: 'numeric'
+          });
+          const color = item.score >= 70 ? '#3d9e5f' : item.score >= 50 ? '#c49b2a' : '#e05252';
+          return `<div class="history-item">
+            <div>
+              <div class="history-role">${item.role}</div>
+              <div class="history-date">${date}</div>
+            </div>
+            <div class="history-score" style="color:${color}">${item.score}<span style="font-size:12px; color:#444;">/100</span></div>
+          </div>`;
+        }).join('');
+
+      } catch (err) {
+        console.log('History error:', err);
+      }
+    }
+
     checkAuth();
   </script>
 </body>
