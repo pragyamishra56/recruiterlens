@@ -511,6 +511,147 @@
     .feedback-section {
       display: none;
     }
+
+    /* TABS */
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: #161616;
+  border: 0.5px solid #1f1f1f;
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 16px;
+}
+
+.tab {
+  flex: 1;
+  background: none;
+  border: none;
+  color: #555;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.tab:hover {
+  color: #888;
+  background: #1a1a1a;
+}
+
+.tab.active {
+  background: #0f0f0f;
+  color: #fff;
+  border: 0.5px solid #2a2a2a;
+}
+
+/* JD SECTION */
+.jd-section {
+  display: none;
+}
+
+.jd-textarea {
+  width: 100%;
+  background: #0f0f0f;
+  border: 0.5px solid #2a2a2a;
+  color: #ccc;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  resize: vertical;
+  min-height: 160px;
+  margin-top: 12px;
+  font-family: inherit;
+  line-height: 1.6;
+  transition: border-color 0.2s;
+}
+
+.jd-textarea:focus {
+  outline: none;
+  border-color: #7c6fcd;
+}
+
+.jd-textarea::placeholder {
+  color: #333;
+}
+
+/* MATCH RESULT */
+.match-result {
+  display: none;
+}
+
+.match-score-wrap {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 16px;
+  border-bottom: 0.5px solid #1f1f1f;
+  margin-bottom: 16px;
+}
+
+.match-score-num {
+  font-size: 52px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.match-label {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.match-bar-bg {
+  height: 3px;
+  background: #1f1f1f;
+  border-radius: 2px;
+  margin-top: 8px;
+}
+
+.match-bar-fill {
+  height: 3px;
+  border-radius: 2px;
+  transition: width 0.8s ease;
+}
+
+.section-divider {
+  height: 0.5px;
+  background: #1f1f1f;
+  margin: 16px 0;
+}
+
+.roadmap-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 0.5px solid #1a1a1a;
+  font-size: 13px;
+  color: #888;
+  line-height: 1.5;
+}
+
+.roadmap-item:last-child {
+  border-bottom: none;
+}
+
+.roadmap-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #1a1730;
+  border: 0.5px solid #534AB7;
+  color: #7c6fcd;
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
   </style>
 </head>
 <body>
@@ -594,11 +735,27 @@ RecruiterLens
     <div class="app-body">
 
       <!-- HERO -->
-      <div class="hero">
+      <!-- <div class="hero">
         <div class="hero-title">Resume Feedback</div>
         <div class="hero-sub">Upload your resume and get honest recruiter feedback</div>
         <div class="hero-badge">✦ AI powered by Groq</div>
-      </div>
+      </div> -->
+      <!-- HERO -->
+<div class="hero">
+  <div class="hero-title">RecruiterLens</div>
+  <div class="hero-sub">See your resume through a recruiter's eyes</div>
+  <div class="hero-badge">✦ AI powered by Groq</div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab active" id="tab1" onclick="switchTab('feedback')">
+    📄 Resume Feedback
+  </button>
+  <button class="tab" id="tab2" onclick="switchTab('jdmatch')">
+    🎯 JD Matcher
+  </button>
+</div>
 
       <!-- UPLOAD CARD -->
       <div class="card">
@@ -642,6 +799,56 @@ RecruiterLens
         <div id="feedbackItems"></div>
       </div>
 
+      <!-- JD MATCHER SECTION -->
+<div class="jd-section" id="jdSection">
+
+  <!-- JD INPUT CARD -->
+  <div class="card">
+    <div class="card-title">Job Description</div>
+    <textarea
+      class="jd-textarea"
+      id="jdInput"
+      placeholder="Paste the job description here...
+
+Example:
+We are looking for a Frontend Developer with:
+- 2+ years React experience
+- Knowledge of TypeScript
+- Experience with REST APIs
+- Strong CSS skills"></textarea>
+
+    <button class="analyze-btn" id="jdBtn" onclick="analyzeJD()">
+      Check My Match
+    </button>
+    <div class="loading-text" id="jdLoadingText"></div>
+  </div>
+
+  <!-- MATCH RESULT CARD -->
+  <div class="card match-result" id="matchResult">
+    <div class="card-title">Match result</div>
+
+    <div class="match-score-wrap">
+      <div class="match-score-num" id="matchScoreNum">0%</div>
+      <div style="flex:1;">
+        <div class="match-label" id="matchLabel">Checking match...</div>
+        <div class="match-bar-bg">
+          <div class="match-bar-fill" id="matchBar" style="width:0%"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-title">Missing skills</div>
+    <div id="missingSkills"></div>
+
+    <div class="section-divider"></div>
+
+    <div class="card-title">Learning roadmap</div>
+    <div id="learningRoadmap"></div>
+  </div>
+
+</div>
+      
+
       <!-- HISTORY CARD -->
       <div class="card">
         <div class="card-title">Analysis history</div>
@@ -649,6 +856,8 @@ RecruiterLens
           <div class="history-empty">No analyses yet — upload your resume above</div>
         </div>
       </div>
+
+      
 
       <!-- FOOTER -->
       <div class="footer">
@@ -684,6 +893,126 @@ RecruiterLens
 
     let resumeText = '';
     let currentUser = null;
+
+    // TAB SWITCHING
+function switchTab(tab) {
+  const feedbackSection = document.querySelectorAll('.card:not(.match-result)');
+  const jdSection = document.getElementById('jdSection');
+  const tab1 = document.getElementById('tab1');
+  const tab2 = document.getElementById('tab2');
+
+  if (tab === 'feedback') {
+    jdSection.style.display = 'none';
+    document.querySelector('.hero').nextElementSibling.nextElementSibling.style.display = 'block';
+    feedbackCard.style.display = resumeText ? 'block' : 'none';
+    document.querySelector('.card:last-of-type').style.display = 'block';
+    tab1.classList.add('active');
+    tab2.classList.remove('active');
+  } else {
+    jdSection.style.display = 'block';
+    tab1.classList.remove('active');
+    tab2.classList.add('active');
+  }
+}
+
+// JD MATCHER
+async function analyzeJD() {
+  const jdText = document.getElementById('jdInput').value.trim();
+
+  if (!jdText) {
+    alert('Please paste a job description first!');
+    return;
+  }
+
+  if (!resumeText) {
+    alert('Please upload your resume in the Resume Feedback tab first!');
+    return;
+  }
+
+  const jdBtn = document.getElementById('jdBtn');
+  const jdLoadingText = document.getElementById('jdLoadingText');
+  const matchResult = document.getElementById('matchResult');
+
+  jdBtn.innerHTML = 'Analyzing match...';
+  jdBtn.disabled = true;
+  jdLoadingText.innerHTML = '🤖 AI is comparing your resume with job description...';
+
+  try {
+    const response = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        resumeText: resumeText,
+        role: 'JD Match',
+        jdText: jdText,
+        isJDMatch: true
+      })
+    });
+
+    const data = await response.json();
+
+    if (!data.choices || data.choices.length === 0) {
+      throw new Error('No response from AI');
+    }
+
+    const content = data.choices[0].message.content;
+    const jsonMatch = content.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('AI did not return JSON');
+    const cleanJson = jsonMatch[0].replace(/[\x00-\x1F\x7F]/g, ' ');
+    const result = JSON.parse(cleanJson);
+
+    jdBtn.innerHTML = '✅ Match complete';
+    jdBtn.style.background = '#1a3a2a';
+    jdBtn.style.color = '#3d9e5f';
+    jdLoadingText.innerHTML = '';
+    matchResult.style.display = 'block';
+
+    // Animate match score
+    const target = result.matchScore;
+    const color = target >= 70 ? '#3d9e5f' : target >= 50 ? '#c49b2a' : '#e05252';
+    const matchScoreNum = document.getElementById('matchScoreNum');
+    const matchBar = document.getElementById('matchBar');
+    const matchLabel = document.getElementById('matchLabel');
+
+    matchScoreNum.style.color = color;
+    matchBar.style.background = color;
+    matchLabel.textContent = target >= 70 ? 'Strong match! 🎉' : target >= 50 ? 'Partial match — improve these skills' : 'Low match — significant gaps found';
+
+    let count = 0;
+    const counter = setInterval(() => {
+      count++;
+      matchScoreNum.textContent = count + '%';
+      matchBar.style.width = count + '%';
+      if (count === target) clearInterval(counter);
+    }, 15);
+
+    // Missing skills
+    document.getElementById('missingSkills').innerHTML =
+      result.missingSkills.map(skill => `
+        <div class="feedback-item">
+          <div class="feedback-icon fi-error">✕</div>
+          <div>${skill}</div>
+        </div>`
+      ).join('');
+
+    // Learning roadmap
+    document.getElementById('learningRoadmap').innerHTML =
+      result.roadmap.map((item, i) => `
+        <div class="roadmap-item">
+          <div class="roadmap-num">${i + 1}</div>
+          <div>${item}</div>
+        </div>`
+      ).join('');
+
+  } catch (err) {
+    console.log('JD Match error:', err);
+    jdLoadingText.innerHTML = '⚠️ Something went wrong. Please try again.';
+    jdBtn.innerHTML = 'Check My Match';
+    jdBtn.disabled = false;
+    jdBtn.style.background = '#7c6fcd';
+    jdBtn.style.color = '#fff';
+  }
+}
 
     // CHECK AUTH
     function checkAuth() {
