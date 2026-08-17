@@ -154,6 +154,14 @@ app.get('/api/history/:userId', async (req, res) => {
   }
 });
 
+app.get('/auth/user', (req, res) => {
+  if (req.session && req.session.user) {
+    res.json({ user: req.session.user });
+  } else {
+    res.json({ user: null });
+  }
+});
+
 // Logout
 app.get('/auth/logout', (req, res) => {
   req.session.destroy();
