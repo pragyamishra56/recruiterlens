@@ -15,31 +15,18 @@ const pool = new Pool({
 
 // Create tables if not exists
 async function initDB() {
-  try {
-    await pool.query(`
-      CREATE TABLE IF NOT EXISTS users (
-        id BIGINT PRIMARY KEY,
-        github_username TEXT UNIQUE NOT NULL,
-        name TEXT,
-        avatar_url TEXT,
-        email TEXT,
-        created_at TIMESTAMP DEFAULT NOW()
-      );
-
-      CREATE TABLE IF NOT EXISTS analyses (
-        id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-        user_id BIGINT REFERENCES users(id),
-        role TEXT NOT NULL,
-        score INTEGER NOT NULL,
-        feedback JSONB NOT NULL,
-        resume_text TEXT,
-        created_at TIMESTAMP DEFAULT NOW()
-      );
-    `);
-    console.log('Database tables ready!');
-  } catch (err) {
-    console.error('DB init error:', err);
-  }
+// Save user to PostgreSQL (optional)
+try {
+  await pool.query(`
+    INSERT INTO users (id, github_username, name, avatar_url, email)
+    VALUES ($1, $2, $3, $4, $5)
+    ON CONFLICT (id) DO UPDATE
+    SET name = $3, avatar_url = $4, email = $5
+  `, [user.id, user.login, user.name || user.login, user.avatar_url, user.email]);
+} catch (dbErr) {
+  console.log('DB save skipped:', dbErr.message);
+  // Continue even if DB fails!
+}
 }
 
 initDB();
