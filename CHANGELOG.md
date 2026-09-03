@@ -11,10 +11,21 @@ All notable changes to this project, day by day.
 - Tested JD Matcher with real job descriptions (Honeywell — 72% match, accurate)
 - Built dark mode UI with custom RL icon and branding
 
-## Sep 2, 2026
-- [Today's work goes here]
-
----
+## Sep 2-3, 2026
+- FIXED: Database connection permanently resolved — 
+  switched to Supabase Transaction Pooler 
+  (aws-1-ap-south-1.pooler.supabase.com:6543)
+  after a week of debugging IPv6/hostname issues
+- History feature now fully working — analyses save 
+  and display correctly
+- Fixed Groq model deprecation issue (updated to 
+  openai/gpt-oss-20b)
+- Full end-to-end flow verified: Login → Upload → 
+  Analyze → JD Match → History — all working
+- Lesson learned: always use Transaction Pooler 
+  (not Direct connection) when connecting Supabase 
+  from Render — Direct connection uses IPv6 which 
+  Render's free tier can't reach
 
 **Live:** recruiterlens-green.vercel.app
 **Built by:** Pragya Mishra
