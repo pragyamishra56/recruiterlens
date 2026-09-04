@@ -652,6 +652,107 @@
   flex-shrink: 0;
   margin-top: 1px;
 }
+
+    /* LANDING PAGE */
+.landing-nav {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px 48px; max-width: 1280px; margin: 0 auto;
+}
+.landing-brand {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 18px; font-weight: 600; color: #fff;
+}
+.brand-accent { color: #7c6fcd; }
+.nav-signin-btn {
+  display: flex; align-items: center; gap: 8px;
+  background: #7c6fcd; color: #fff; text-decoration: none;
+  padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 500;
+  transition: all 0.2s;
+}
+.nav-signin-btn:hover { background: #6a5eb5; }
+
+.landing-hero {
+  max-width: 1280px; margin: 0 auto; padding: 48px 48px 80px;
+  display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; align-items: center;
+}
+.hero-badge {
+  display: inline-block; font-size: 12px; color: #9d8fef;
+  background: #1a1730; border: 0.5px solid #3d3566;
+  padding: 5px 14px; border-radius: 20px; margin-bottom: 24px;
+}
+.hero-title { font-size: 48px; font-weight: 700; color: #fff; line-height: 1.15; margin-bottom: 20px; }
+.hero-sub { font-size: 15px; color: #888; line-height: 1.7; max-width: 480px; margin-bottom: 28px; }
+.hero-actions { display: flex; gap: 12px; }
+.hero-btn-primary {
+  display: flex; align-items: center; gap: 8px;
+  background: #7c6fcd; color: #fff; text-decoration: none;
+  padding: 13px 26px; border-radius: 8px; font-size: 14px; font-weight: 600;
+  transition: all 0.2s;
+}
+.hero-btn-primary:hover { background: #6a5eb5; transform: translateY(-1px); }
+
+.hero-right { display: flex; justify-content: center; }
+.hero-card {
+  background: #161616; border: 0.5px solid #2a2a2a; border-radius: 16px;
+  padding: 40px 32px; text-align: center; max-width: 340px;
+}
+.hero-card-title { color: #fff; font-size: 20px; font-weight: 600; margin: 16px 0 8px; }
+.hero-card-sub { color: #555; font-size: 13px; line-height: 1.6; margin-bottom: 24px; }
+.hero-card-btn {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: #fff; color: #0f0f0f; text-decoration: none;
+  padding: 11px; border-radius: 8px; font-size: 13px; font-weight: 600; margin-bottom: 24px;
+}
+.hero-card-features { text-align: left; display: flex; flex-direction: column; gap: 10px; }
+.feature-line { font-size: 12px; color: #666; }
+
+.section-label { font-size: 11px; color: #7c6fcd; letter-spacing: 1px; font-weight: 600; margin-bottom: 10px; }
+.section-title { font-size: 28px; color: #fff; font-weight: 700; margin-bottom: 40px; max-width: 600px; }
+
+.landing-features { max-width: 1280px; margin: 0 auto; padding: 40px 48px 80px; }
+.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.feature-card {
+  background: #161616; border: 0.5px solid #1f1f1f; border-radius: 12px; padding: 28px;
+}
+.feature-icon { font-size: 28px; margin-bottom: 14px; }
+.feature-card-title { color: #fff; font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+.feature-card-desc { color: #666; font-size: 13px; line-height: 1.6; }
+
+.landing-preview {
+  max-width: 1280px; margin: 0 auto; padding: 40px 48px 80px;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
+}
+.preview-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.preview-list li { color: #888; font-size: 13px; padding-left: 20px; position: relative; }
+.preview-list li::before { content: "✓"; position: absolute; left: 0; color: #3d9e5f; }
+
+.terminal-window { background: #0a0a0a; border: 0.5px solid #2a2a2a; border-radius: 10px; overflow: hidden; }
+.terminal-header { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: #161616; border-bottom: 0.5px solid #2a2a2a; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot.red { background: #e05252; } .dot.yellow { background: #c49b2a; } .dot.green { background: #3d9e5f; }
+.terminal-title { color: #555; font-size: 12px; margin-left: 8px; }
+.terminal-body { padding: 20px; }
+.terminal-body pre { color: #ccc; font-size: 12px; font-family: 'Courier New', monospace; line-height: 1.7; margin: 0; }
+.t-key { color: #7c6fcd; } .t-str { color: #3d9e5f; } .t-num { color: #c49b2a; }
+
+.landing-cta { max-width: 700px; margin: 0 auto; padding: 60px 48px; text-align: center; }
+.cta-title { font-size: 28px; color: #fff; font-weight: 700; margin-bottom: 10px; }
+.cta-sub { color: #666; font-size: 14px; margin-bottom: 28px; }
+.landing-cta .hero-btn-primary { display: inline-flex; }
+
+.landing-footer { max-width: 1280px; margin: 0 auto; padding: 32px 48px; text-align: center; border-top: 0.5px solid #1a1a1a; }
+.footer-brand-row { display: flex; align-items: center; justify-content: center; gap: 8px; color: #fff; font-weight: 600; margin-bottom: 12px; }
+.footer-links-row { display: flex; justify-content: center; gap: 16px; margin-bottom: 12px; }
+.footer-links-row a { color: #7c6fcd; text-decoration: none; font-size: 13px; }
+.footer-copy-row { color: #444; font-size: 12px; }
+
+@media (max-width: 900px) {
+  .landing-hero, .landing-preview { grid-template-columns: 1fr; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .hero-title { font-size: 32px; }
+  .landing-nav { padding: 20px 24px; }
+  .landing-hero, .landing-features, .landing-preview, .landing-cta, .landing-footer { padding-left: 24px; padding-right: 24px; }
+}
   </style>
 </head>
 <body>
@@ -676,43 +777,143 @@
     </defs>
   </svg>
 
-  <!-- LOGIN PAGE -->
+    <!-- LOGIN PAGE -->
   <div class="login-page" id="loginPage">
-    <div class="login-card">
-      <div class="login-icon-wrap">
-        <svg width="72" height="72" class="rl-icon"><use href="#rl-icon"/></svg>
-      </div>
-      <div class="login-title">RecruiterLens</div>
-      <div class="login-subtitle">See your resume through a recruiter's eyes.<br>Get honest AI feedback instantly.</div>
 
-      <a href="https://recruiterlens-server.onrender.com/auth/github" class="github-btn">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="#0f0f0f">
+    <nav class="landing-nav">
+      <div class="landing-brand">
+        <svg width="32" height="32" class="rl-icon"><use href="#rl-icon"/></svg>
+        <span>Recruiter<span class="brand-accent">Lens</span></span>
+      </div>
+      <a href="https://recruiterlens-server.onrender.com/auth/github" class="nav-signin-btn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
         </svg>
-        Continue with GitHub
+        Sign in with GitHub
       </a>
+    </nav>
 
-      <div class="login-divider"></div>
-
-      <div class="login-features">
-        <div class="feature-item">
-          <div class="feature-dot"></div>
-          AI analyzes your resume like a real recruiter
-        </div>
-        <div class="feature-item">
-          <div class="feature-dot"></div>
-          Role specific feedback for your target job
-        </div>
-        <div class="feature-item">
-          <div class="feature-dot"></div>
-          Resume score with detailed breakdown
-        </div>
-        <div class="feature-item">
-          <div class="feature-dot"></div>
-          Track your improvement over time
+    <section class="landing-hero">
+      <div class="hero-left">
+        <div class="hero-badge">● Built by a fresher, for freshers</div>
+        <h1 class="hero-title">
+          See your resume<br>
+          through a <span class="brand-accent">recruiter's</span><br>
+          eyes.
+        </h1>
+        <p class="hero-sub">
+          Get honest, AI-powered feedback on your resume — role-specific
+          analysis, job description matching, and a clear roadmap to close
+          your skill gaps. Free, and built to actually help freshers.
+        </p>
+        <div class="hero-actions">
+          <a href="https://recruiterlens-server.onrender.com/auth/github" class="hero-btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+            Continue with GitHub
+          </a>
         </div>
       </div>
-    </div>
+
+      <div class="hero-right">
+        <div class="hero-card">
+          <svg width="56" height="56" class="rl-icon"><use href="#rl-icon"/></svg>
+          <div class="hero-card-title">RecruiterLens</div>
+          <div class="hero-card-sub">See your resume through a recruiter's eyes.<br>Get honest AI feedback instantly.</div>
+          <a href="https://recruiterlens-server.onrender.com/auth/github" class="hero-card-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+            </svg>
+            Continue with GitHub
+          </a>
+          <div class="hero-card-features">
+            <div class="feature-line">● AI analyzes your resume like a real recruiter</div>
+            <div class="feature-line">● Role-specific feedback for your target job</div>
+            <div class="feature-line">● Resume score with detailed breakdown</div>
+            <div class="feature-line">● Track your improvement over time</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="landing-features">
+      <div class="section-label">HOW IT WORKS</div>
+      <h2 class="section-title">Three simple steps to a stronger resume.</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📄</div>
+          <div class="feature-card-title">Upload Your Resume</div>
+          <div class="feature-card-desc">Upload your resume as a PDF. Nothing is stored beyond what's needed to give you feedback.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🤖</div>
+          <div class="feature-card-title">AI Analyzes It</div>
+          <div class="feature-card-desc">Groq-powered AI reviews your resume the way a recruiter would — role-specific, honest, and specific.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <div class="feature-card-title">Match Against Any Job</div>
+          <div class="feature-card-desc">Paste a job description and get a match score, missing skills, and a learning roadmap to close the gap.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="landing-preview">
+      <div class="preview-left">
+        <div class="section-label">REAL OUTPUT</div>
+        <h2 class="section-title">Feedback that's actually specific.</h2>
+        <p class="hero-sub">Not generic advice. RecruiterLens reads your resume and gives you concrete, role-specific feedback — errors, warnings, and what you're doing right.</p>
+        <ul class="preview-list">
+          <li>Role-specific scoring, not one-size-fits-all</li>
+          <li>Missing skills mapped to the job description</li>
+          <li>A learning roadmap you can actually follow</li>
+        </ul>
+      </div>
+      <div class="preview-right">
+        <div class="terminal-window">
+          <div class="terminal-header">
+            <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+            <span class="terminal-title">analysis_result.json</span>
+          </div>
+          <div class="terminal-body">
+<pre>{
+  <span class="t-key">"role"</span>: <span class="t-str">"Frontend Developer"</span>,
+  <span class="t-key">"score"</span>: <span class="t-num">70</span>,
+  <span class="t-key">"feedback"</span>: [
+    <span class="t-str">"Phone number not in standard format"</span>,
+    <span class="t-str">"Strong React + Tailwind skills"</span>,
+    <span class="t-str">"Live demo links are a big plus"</span>
+  ]
+}</pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="landing-cta">
+      <h2 class="cta-title">Ready to see your resume differently?</h2>
+      <p class="cta-sub">Free to use. Built by a fresher who was tired of applying blind.</p>
+      <a href="https://recruiterlens-server.onrender.com/auth/github" class="hero-btn-primary">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+        </svg>
+        Analyze My Resume
+      </a>
+    </section>
+
+    <footer class="landing-footer">
+      <div class="footer-brand-row">
+        <svg width="22" height="22" class="rl-icon"><use href="#rl-icon"/></svg>
+        <span>RecruiterLens</span>
+      </div>
+      <div class="footer-links-row">
+        <a href="https://linkedin.com/in/pragya-mishra-070438279" target="_blank">LinkedIn</a>
+        <a href="https://github.com/pragyamishra56" target="_blank">GitHub</a>
+      </div>
+      <div class="footer-copy-row">Built with ❤️ by Pragya Mishra · © 2026 RecruiterLens</div>
+    </footer>
+
   </div>
 
   <!-- APP PAGE -->
