@@ -8,120 +8,28 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
+    html, body {
       background: #0f0f0f;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
       color: #ccc;
       min-height: 100vh;
       overflow-x: hidden;
-      width: 100%;
+      max-width: 100vw;
     }
 
-    /* SCROLLBAR */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: #0f0f0f; }
     ::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 3px; }
 
-    /* ICON SVG */
-    .rl-icon {
-      flex-shrink: 0;
-    }
+    .rl-icon { flex-shrink: 0; }
 
-    /* LOGIN PAGE */
+    /* LOGIN / LANDING PAGE */
     .login-page {
-      display: block;
+      display: none;
       min-height: 100vh;
       background: #0f0f0f;
       overflow-x: hidden;
-      width: 100%;
-    }
-
-    .login-card {
-      background: #161616;
-      border: 0.5px solid #2a2a2a;
-      border-radius: 16px;
-      padding: 48px 40px;
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-      animation: fadeIn 0.4s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(16px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .login-icon-wrap {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .login-title {
-      font-size: 22px;
-      font-weight: 600;
-      color: #fff;
-      margin-bottom: 6px;
-    }
-
-    .login-subtitle {
-      font-size: 13px;
-      color: #555;
-      margin-bottom: 32px;
-      line-height: 1.6;
-    }
-
-    .github-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      background: #fff;
-      color: #0f0f0f;
-      border: none;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      width: 100%;
-      cursor: pointer;
-      transition: all 0.2s;
-      text-decoration: none;
-    }
-
-    .github-btn:hover {
-      background: #f0f0f0;
-      transform: translateY(-1px);
-    }
-
-    .login-divider {
-      height: 0.5px;
-      background: #1f1f1f;
-      margin: 28px 0;
-    }
-
-    .login-features {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      text-align: left;
-    }
-
-    .feature-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 13px;
-      color: #555;
-    }
-
-    .feature-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: #7c6fcd;
-      flex-shrink: 0;
+      max-width: 100vw;
     }
 
     /* APP PAGE */
@@ -130,630 +38,244 @@
       min-height: 100vh;
     }
 
-    /* NAVBAR */
-.navbar {
-  background: #161616;
-  border-bottom: 0.5px solid #1f1f1f;
-  padding: 0 32px;
-  height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-
-    .navbar-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  font-size: 17px;
-  font-weight: 600;
-  color: #fff;
-}
-
-    .navbar-right {
+    /* NAVBAR (app) */
+    .navbar {
+      background: #161616;
+      border-bottom: 0.5px solid #1f1f1f;
+      padding: 0 32px;
+      height: 64px;
       display: flex;
       align-items: center;
-      gap: 10px;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-
-    .user-avatar {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  border: 1.5px solid #2a2a2a;
-}
-
-.user-name {
-  font-size: 14px;
-  color: #888;
-}
-
-.logout-btn {
-  font-size: 13px;
-  color: #555;
-  background: none;
-  border: 0.5px solid #2a2a2a;
-  padding: 6px 14px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-    .logout-btn:hover {
-      border-color: #444;
-      color: #888;
+    .navbar-brand { display: flex; align-items: center; gap: 12px; font-size: 17px; font-weight: 600; color: #fff; }
+    .navbar-right { display: flex; align-items: center; gap: 10px; }
+    .user-avatar { width: 34px; height: 34px; border-radius: 50%; border: 1.5px solid #2a2a2a; }
+    .user-name { font-size: 14px; color: #888; }
+    .logout-btn {
+      font-size: 13px; color: #555; background: none; border: 0.5px solid #2a2a2a;
+      padding: 6px 14px; border-radius: 6px; cursor: pointer; transition: all 0.2s;
     }
+    .logout-btn:hover { border-color: #444; color: #888; }
 
     /* BODY */
-    .app-body {
-      max-width: 660px;
-      margin: 0 auto;
-      padding: 32px 20px 60px;
-    }
+    .app-body { max-width: 660px; margin: 0 auto; padding: 32px 20px 60px; }
 
-    /* HERO */
-    .hero {
-      margin-bottom: 24px;
-    }
-
-    .hero-title {
-      font-size: 20px;
-      font-weight: 600;
-      color: #fff;
-      margin-bottom: 4px;
-    }
-
-    .hero-sub {
-      font-size: 13px;
-      color: #555;
-    }
-
+    /* HERO (app) */
+    .hero { margin-bottom: 24px; }
+    .hero-title { font-size: 20px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+    .hero-sub { font-size: 13px; color: #555; }
     .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: #1a1730;
-      color: #9d8fef;
-      font-size: 11px;
-      padding: 3px 10px;
-      border-radius: 20px;
-      border: 0.5px solid #3d3566;
-      margin-top: 10px;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #1a1730; color: #9d8fef; font-size: 11px;
+      padding: 3px 10px; border-radius: 20px; border: 0.5px solid #3d3566; margin-top: 10px;
     }
 
     /* CARDS */
-    .card {
-      background: #161616;
-      border: 0.5px solid #1f1f1f;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 12px;
-    }
-
-    .card-title {
-      font-size: 11px;
-      font-weight: 500;
-      color: #444;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      margin-bottom: 12px;
-    }
+    .card { background: #161616; border: 0.5px solid #1f1f1f; border-radius: 12px; padding: 20px; margin-bottom: 12px; }
+    .card-title { font-size: 11px; font-weight: 500; color: #444; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 12px; }
 
     /* SELECT */
     .role-select {
-      width: 100%;
-      background: #0f0f0f;
-      border: 0.5px solid #2a2a2a;
-      color: #ccc;
-      padding: 10px 14px;
-      border-radius: 8px;
-      font-size: 14px;
-      cursor: pointer;
-      transition: border-color 0.2s;
-      appearance: none;
+      width: 100%; background: #0f0f0f; border: 0.5px solid #2a2a2a; color: #ccc;
+      padding: 10px 14px; border-radius: 8px; font-size: 14px; cursor: pointer;
+      transition: border-color 0.2s; appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%23555' d='M5 7L1 3h8z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 14px center;
+      background-repeat: no-repeat; background-position: right 14px center;
     }
-
-    .role-select:focus {
-      outline: none;
-      border-color: #7c6fcd;
-    }
+    .role-select:focus { outline: none; border-color: #7c6fcd; }
 
     /* UPLOAD */
     .upload-box {
-      border: 0.5px dashed #2a2a2a;
-      border-radius: 10px;
-      padding: 28px;
-      text-align: center;
-      color: #444;
-      font-size: 13px;
-      cursor: pointer;
-      margin-top: 12px;
-      transition: all 0.2s;
+      border: 0.5px dashed #2a2a2a; border-radius: 10px; padding: 28px; text-align: center;
+      color: #444; font-size: 13px; cursor: pointer; margin-top: 12px; transition: all 0.2s;
     }
-
-    .upload-box:hover {
-      border-color: #7c6fcd;
-      color: #7c6fcd;
-      background: #0d0b1a;
-    }
-
-    .upload-icon {
-      font-size: 28px;
-      margin-bottom: 8px;
-      display: block;
-    }
-
-    .file-name {
-      font-size: 12px;
-      color: #7c6fcd;
-      margin-top: 8px;
-      text-align: center;
-      min-height: 18px;
-    }
+    .upload-box:hover { border-color: #7c6fcd; color: #7c6fcd; background: #0d0b1a; }
+    .upload-icon { font-size: 28px; margin-bottom: 8px; display: block; }
+    .file-name { font-size: 12px; color: #7c6fcd; margin-top: 8px; text-align: center; min-height: 18px; }
 
     /* BUTTON */
     .analyze-btn {
-      width: 100%;
-      background: #7c6fcd;
-      color: #fff;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-      margin-top: 12px;
-      cursor: pointer;
-      transition: all 0.2s;
+      width: 100%; background: #7c6fcd; color: #fff; border: none; padding: 12px;
+      border-radius: 8px; font-size: 14px; font-weight: 500; margin-top: 12px; cursor: pointer; transition: all 0.2s;
     }
-
-    .analyze-btn:hover {
-      background: #6a5eb5;
-      transform: translateY(-1px);
-    }
-
-    .analyze-btn:disabled {
-      background: #2a2a2a;
-      color: #555;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .loading-text {
-      text-align: center;
-      color: #7c6fcd;
-      font-size: 13px;
-      margin-top: 10px;
-      min-height: 20px;
-    }
+    .analyze-btn:hover { background: #6a5eb5; transform: translateY(-1px); }
+    .analyze-btn:disabled { background: #2a2a2a; color: #555; cursor: not-allowed; transform: none; }
+    .loading-text { text-align: center; color: #7c6fcd; font-size: 13px; margin-top: 10px; min-height: 20px; }
 
     /* SCORE */
-    .score-wrap {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      padding-bottom: 16px;
-      border-bottom: 0.5px solid #1f1f1f;
-      margin-bottom: 16px;
-    }
-
-    .score-number {
-      font-size: 52px;
-      font-weight: 600;
-      line-height: 1;
-    }
-
-    .score-meta {
-      flex: 1;
-    }
-
-    .score-label {
-      font-size: 12px;
-      color: #555;
-      margin-bottom: 8px;
-    }
-
-    .score-bar-bg {
-      height: 3px;
-      background: #1f1f1f;
-      border-radius: 2px;
-    }
-
-    .score-bar-fill {
-      height: 3px;
-      border-radius: 2px;
-      transition: width 0.8s ease;
-    }
+    .score-wrap { display: flex; align-items: center; gap: 20px; padding-bottom: 16px; border-bottom: 0.5px solid #1f1f1f; margin-bottom: 16px; }
+    .score-number { font-size: 52px; font-weight: 600; line-height: 1; }
+    .score-meta { flex: 1; }
+    .score-label { font-size: 12px; color: #555; margin-bottom: 8px; }
+    .score-bar-bg { height: 3px; background: #1f1f1f; border-radius: 2px; }
+    .score-bar-fill { height: 3px; border-radius: 2px; transition: width 0.8s ease; }
 
     /* FEEDBACK ITEMS */
     .feedback-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      padding: 10px 0;
-      border-bottom: 0.5px solid #1a1a1a;
-      font-size: 13px;
-      color: #888;
-      line-height: 1.5;
+      display: flex; align-items: flex-start; gap: 10px; padding: 10px 0;
+      border-bottom: 0.5px solid #1a1a1a; font-size: 13px; color: #888; line-height: 1.5;
     }
-
-    .feedback-item:last-child {
-      border-bottom: none;
-    }
-
+    .feedback-item:last-child { border-bottom: none; }
     .feedback-icon {
-      width: 18px;
-      height: 18px;
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 10px;
-      margin-top: 1px;
+      width: 18px; height: 18px; border-radius: 4px; display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0; font-size: 10px; margin-top: 1px;
     }
-
     .fi-error { background: #1f0f0f; color: #e05252; }
     .fi-warning { background: #1a1500; color: #c49b2a; }
     .fi-success { background: #0a1a10; color: #3d9e5f; }
 
     /* HISTORY */
     .history-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 12px 0;
-      border-bottom: 0.5px solid #1a1a1a;
-      cursor: pointer;
-      transition: all 0.2s;
+      display: flex; align-items: center; justify-content: space-between; padding: 12px 0;
+      border-bottom: 0.5px solid #1a1a1a; cursor: pointer; transition: all 0.2s;
     }
-
     .history-item:last-child { border-bottom: none; }
+    .history-item:hover .history-role { color: #9d8fef; }
+    .history-role { font-size: 14px; color: #ccc; font-weight: 500; transition: color 0.2s; }
+    .history-date { font-size: 11px; color: #444; margin-top: 3px; }
+    .history-score { font-size: 18px; font-weight: 600; }
+    .history-empty { text-align: center; color: #333; font-size: 13px; padding: 24px 0; }
 
-    .history-item:hover .history-role {
-      color: #9d8fef;
-    }
-
-    .history-role {
-      font-size: 14px;
-      color: #ccc;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
-
-    .history-date {
-      font-size: 11px;
-      color: #444;
-      margin-top: 3px;
-    }
-
-    .history-score {
-      font-size: 18px;
-      font-weight: 600;
-    }
-
-    .history-empty {
-      text-align: center;
-      color: #333;
-      font-size: 13px;
-      padding: 24px 0;
-    }
-
-    /* FOOTER */
-    .footer {
-      margin-top: 40px;
-      padding-top: 24px;
-      border-top: 0.5px solid #1a1a1a;
-      text-align: center;
-    }
-
-    .footer-brand {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-
-    .footer-name {
-      font-size: 14px;
-      font-weight: 500;
-      color: #fff;
-    }
-
-    .footer-tagline {
-      font-size: 12px;
-      color: #333;
-      margin-bottom: 16px;
-    }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
+    /* FOOTER (app) */
+    .footer { margin-top: 40px; padding-top: 24px; border-top: 0.5px solid #1a1a1a; text-align: center; }
+    .footer-brand { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px; }
+    .footer-name { font-size: 14px; font-weight: 500; color: #fff; }
+    .footer-tagline { font-size: 12px; color: #333; margin-bottom: 16px; }
+    .footer-links { display: flex; justify-content: center; gap: 12px; margin-bottom: 16px; }
     .footer-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: #161616;
-      border: 0.5px solid #2a2a2a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-decoration: none;
-      transition: all 0.2s;
+      width: 32px; height: 32px; border-radius: 8px; background: #161616; border: 0.5px solid #2a2a2a;
+      display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.2s;
     }
+    .footer-icon:hover { border-color: #7c6fcd; transform: translateY(-2px); }
+    .footer-copy { font-size: 12px; color: #333; margin-bottom: 4px; }
+    .footer-rights { font-size: 11px; color: #2a2a2a; }
 
-    .footer-icon:hover {
-      border-color: #7c6fcd;
-      transform: translateY(-2px);
-    }
-
-    .footer-copy {
-      font-size: 12px;
-      color: #333;
-      margin-bottom: 4px;
-    }
-
-    .footer-rights {
-      font-size: 11px;
-      color: #2a2a2a;
-    }
-
-    /* FEEDBACK SECTION HIDDEN */
-    .feedback-section {
-      display: none;
-    }
+    .feedback-section { display: none; }
 
     /* TABS */
-.tabs {
-  display: flex;
-  gap: 4px;
-  background: #161616;
-  border: 0.5px solid #1f1f1f;
-  border-radius: 10px;
-  padding: 4px;
-  margin-bottom: 16px;
-}
+    .tabs { display: flex; gap: 4px; background: #161616; border: 0.5px solid #1f1f1f; border-radius: 10px; padding: 4px; margin-bottom: 16px; }
+    .tab { flex: 1; background: none; border: none; color: #555; padding: 8px 16px; border-radius: 8px; font-size: 13px; cursor: pointer; transition: all 0.2s; font-weight: 500; }
+    .tab:hover { color: #888; background: #1a1a1a; }
+    .tab.active { background: #0f0f0f; color: #fff; border: 0.5px solid #2a2a2a; }
 
-.tab {
-  flex: 1;
-  background: none;
-  border: none;
-  color: #555;
-  padding: 8px 16px;
-  border-radius: 8px;
-  font-size: 13px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-weight: 500;
-}
+    /* JD SECTION */
+    .jd-section { display: none; }
+    .jd-textarea {
+      width: 100%; background: #0f0f0f; border: 0.5px solid #2a2a2a; color: #ccc;
+      padding: 14px; border-radius: 8px; font-size: 13px; resize: vertical; min-height: 160px;
+      margin-top: 12px; font-family: inherit; line-height: 1.6; transition: border-color 0.2s;
+    }
+    .jd-textarea:focus { outline: none; border-color: #7c6fcd; }
+    .jd-textarea::placeholder { color: #333; }
 
-.tab:hover {
-  color: #888;
-  background: #1a1a1a;
-}
+    /* MATCH RESULT */
+    .match-result { display: none; }
+    .match-score-wrap { display: flex; align-items: center; gap: 20px; padding-bottom: 16px; border-bottom: 0.5px solid #1f1f1f; margin-bottom: 16px; }
+    .match-score-num { font-size: 52px; font-weight: 600; line-height: 1; }
+    .match-label { font-size: 13px; color: #555; margin-bottom: 4px; }
+    .match-bar-bg { height: 3px; background: #1f1f1f; border-radius: 2px; margin-top: 8px; }
+    .match-bar-fill { height: 3px; border-radius: 2px; transition: width 0.8s ease; }
+    .section-divider { height: 0.5px; background: #1f1f1f; margin: 16px 0; }
+    .roadmap-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid #1a1a1a; font-size: 13px; color: #888; line-height: 1.5; }
+    .roadmap-item:last-child { border-bottom: none; }
+    .roadmap-num {
+      width: 20px; height: 20px; border-radius: 50%; background: #1a1730; border: 0.5px solid #534AB7;
+      color: #7c6fcd; font-size: 10px; font-weight: 600; display: flex; align-items: center;
+      justify-content: center; flex-shrink: 0; margin-top: 1px;
+    }
 
-.tab.active {
-  background: #0f0f0f;
-  color: #fff;
-  border: 0.5px solid #2a2a2a;
-}
+    /* ============ LANDING PAGE ============ */
+    .landing-nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 24px 48px; max-width: 1200px; margin: 0 auto; width: 100%;
+    }
+    .landing-brand { display: flex; align-items: center; gap: 10px; font-size: 18px; font-weight: 600; color: #fff; }
+    .brand-accent { color: #7c6fcd; }
+    .nav-signin-btn {
+      display: flex; align-items: center; gap: 8px; background: #7c6fcd; color: #fff;
+      text-decoration: none; padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 500; transition: all 0.2s;
+    }
+    .nav-signin-btn:hover { background: #6a5eb5; }
 
-/* JD SECTION */
-.jd-section {
-  display: none;
-}
+    .landing-hero {
+      max-width: 1200px; margin: 0 auto; padding: 48px 48px 80px; width: 100%;
+      display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 48px; align-items: center;
+    }
+    .hero-badge {
+      display: inline-block; font-size: 12px; color: #9d8fef; background: #1a1730;
+      border: 0.5px solid #3d3566; padding: 5px 14px; border-radius: 20px; margin-bottom: 24px;
+    }
+    .hero-title { font-size: 44px; font-weight: 700; color: #fff; line-height: 1.15; margin-bottom: 20px; word-wrap: break-word; }
+    .hero-sub { font-size: 15px; color: #888; line-height: 1.7; margin-bottom: 28px; }
+    .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+    .hero-btn-primary {
+      display: inline-flex; align-items: center; gap: 8px; background: #7c6fcd; color: #fff;
+      text-decoration: none; padding: 13px 26px; border-radius: 8px; font-size: 14px; font-weight: 600; transition: all 0.2s;
+    }
+    .hero-btn-primary:hover { background: #6a5eb5; transform: translateY(-1px); }
 
-.jd-textarea {
-  width: 100%;
-  background: #0f0f0f;
-  border: 0.5px solid #2a2a2a;
-  color: #ccc;
-  padding: 14px;
-  border-radius: 8px;
-  font-size: 13px;
-  resize: vertical;
-  min-height: 160px;
-  margin-top: 12px;
-  font-family: inherit;
-  line-height: 1.6;
-  transition: border-color 0.2s;
-}
+    .hero-right { display: flex; justify-content: center; min-width: 0; }
+    .hero-card {
+      background: #161616; border: 0.5px solid #2a2a2a; border-radius: 16px;
+      padding: 36px 28px; text-align: center; width: 100%; max-width: 320px;
+    }
+    .hero-card-title { color: #fff; font-size: 20px; font-weight: 600; margin: 16px 0 8px; }
+    .hero-card-sub { color: #555; font-size: 13px; line-height: 1.6; margin-bottom: 24px; }
+    .hero-card-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px; background: #fff;
+      color: #0f0f0f; text-decoration: none; padding: 11px; border-radius: 8px; font-size: 13px; font-weight: 600; margin-bottom: 24px;
+    }
+    .hero-card-features { text-align: left; display: flex; flex-direction: column; gap: 10px; }
+    .feature-line { font-size: 12px; color: #666; }
 
-.jd-textarea:focus {
-  outline: none;
-  border-color: #7c6fcd;
-}
+    .section-label { font-size: 11px; color: #7c6fcd; letter-spacing: 1px; font-weight: 600; margin-bottom: 10px; }
+    .section-title { font-size: 26px; color: #fff; font-weight: 700; margin-bottom: 36px; max-width: 600px; }
 
-.jd-textarea::placeholder {
-  color: #333;
-}
+    .landing-features { max-width: 1200px; margin: 0 auto; padding: 40px 48px 80px; width: 100%; }
+    .feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+    .feature-card { background: #161616; border: 0.5px solid #1f1f1f; border-radius: 12px; padding: 26px; min-width: 0; }
+    .feature-icon { font-size: 26px; margin-bottom: 14px; }
+    .feature-card-title { color: #fff; font-size: 15px; font-weight: 600; margin-bottom: 8px; }
+    .feature-card-desc { color: #666; font-size: 13px; line-height: 1.6; }
 
-/* MATCH RESULT */
-.match-result {
-  display: none;
-}
+    .landing-preview {
+      max-width: 1200px; margin: 0 auto; padding: 40px 48px 80px; width: 100%;
+      display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: center;
+    }
+    .preview-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+    .preview-list li { color: #888; font-size: 13px; padding-left: 20px; position: relative; }
+    .preview-list li::before { content: "✓"; position: absolute; left: 0; color: #3d9e5f; }
 
-.match-score-wrap {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  padding-bottom: 16px;
-  border-bottom: 0.5px solid #1f1f1f;
-  margin-bottom: 16px;
-}
+    .terminal-window { background: #0a0a0a; border: 0.5px solid #2a2a2a; border-radius: 10px; overflow: hidden; min-width: 0; }
+    .terminal-header { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: #161616; border-bottom: 0.5px solid #2a2a2a; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; }
+    .dot.red { background: #e05252; } .dot.yellow { background: #c49b2a; } .dot.green { background: #3d9e5f; }
+    .terminal-title { color: #555; font-size: 12px; margin-left: 8px; }
+    .terminal-body { padding: 18px; overflow-x: auto; }
+    .terminal-body pre { color: #ccc; font-size: 11px; font-family: 'Courier New', monospace; line-height: 1.7; margin: 0; white-space: pre-wrap; word-break: break-word; }
+    .t-key { color: #7c6fcd; } .t-str { color: #3d9e5f; } .t-num { color: #c49b2a; }
 
-.match-score-num {
-  font-size: 52px;
-  font-weight: 600;
-  line-height: 1;
-}
+    .landing-cta { max-width: 700px; margin: 0 auto; padding: 60px 48px; text-align: center; width: 100%; }
+    .cta-title { font-size: 26px; color: #fff; font-weight: 700; margin-bottom: 10px; }
+    .cta-sub { color: #666; font-size: 14px; margin-bottom: 28px; }
 
-.match-label {
-  font-size: 13px;
-  color: #555;
-  margin-bottom: 4px;
-}
+    .landing-footer { max-width: 1200px; margin: 0 auto; padding: 32px 48px; text-align: center; border-top: 0.5px solid #1a1a1a; width: 100%; }
+    .footer-brand-row { display: flex; align-items: center; justify-content: center; gap: 8px; color: #fff; font-weight: 600; margin-bottom: 12px; }
+    .footer-links-row { display: flex; justify-content: center; gap: 16px; margin-bottom: 12px; }
+    .footer-links-row a { color: #7c6fcd; text-decoration: none; font-size: 13px; }
+    .footer-copy-row { color: #444; font-size: 12px; }
 
-.match-bar-bg {
-  height: 3px;
-  background: #1f1f1f;
-  border-radius: 2px;
-  margin-top: 8px;
-}
-
-.match-bar-fill {
-  height: 3px;
-  border-radius: 2px;
-  transition: width 0.8s ease;
-}
-
-.section-divider {
-  height: 0.5px;
-  background: #1f1f1f;
-  margin: 16px 0;
-}
-
-.roadmap-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  padding: 10px 0;
-  border-bottom: 0.5px solid #1a1a1a;
-  font-size: 13px;
-  color: #888;
-  line-height: 1.5;
-}
-
-.roadmap-item:last-child {
-  border-bottom: none;
-}
-
-.roadmap-num {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: #1a1730;
-  border: 0.5px solid #534AB7;
-  color: #7c6fcd;
-  font-size: 10px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-top: 1px;
-}
-
-    /* LANDING PAGE */
-.landing-nav {
-  display: flex; justify-content: space-between; align-items: center;
-  padding: 24px 48px; max-width: 1280px; margin: 0 auto;
-}
-.landing-brand {
-  display: flex; align-items: center; gap: 10px;
-  font-size: 18px; font-weight: 600; color: #fff;
-}
-.brand-accent { color: #7c6fcd; }
-.nav-signin-btn {
-  display: flex; align-items: center; gap: 8px;
-  background: #7c6fcd; color: #fff; text-decoration: none;
-  padding: 9px 18px; border-radius: 8px; font-size: 13px; font-weight: 500;
-  transition: all 0.2s;
-}
-.nav-signin-btn:hover { background: #6a5eb5; }
-
-.landing-hero {
-  max-width: 1280px; margin: 0 auto; padding: 48px 48px 80px;
-  display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; align-items: center;
-}
-.hero-badge {
-  display: inline-block; font-size: 12px; color: #9d8fef;
-  background: #1a1730; border: 0.5px solid #3d3566;
-  padding: 5px 14px; border-radius: 20px; margin-bottom: 24px;
-}
-.hero-title { font-size: 48px; font-weight: 700; color: #fff; line-height: 1.15; margin-bottom: 20px; }
-.hero-sub { font-size: 15px; color: #888; line-height: 1.7; max-width: 480px; margin-bottom: 28px; }
-.hero-actions { display: flex; gap: 12px; }
-.hero-btn-primary {
-  display: flex; align-items: center; gap: 8px;
-  background: #7c6fcd; color: #fff; text-decoration: none;
-  padding: 13px 26px; border-radius: 8px; font-size: 14px; font-weight: 600;
-  transition: all 0.2s;
-}
-.hero-btn-primary:hover { background: #6a5eb5; transform: translateY(-1px); }
-
-.hero-right { display: flex; justify-content: center; }
-.hero-card {
-  background: #161616; border: 0.5px solid #2a2a2a; border-radius: 16px;
-  padding: 40px 32px; text-align: center; max-width: 340px;
-}
-.hero-card-title { color: #fff; font-size: 20px; font-weight: 600; margin: 16px 0 8px; }
-.hero-card-sub { color: #555; font-size: 13px; line-height: 1.6; margin-bottom: 24px; }
-.hero-card-btn {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  background: #fff; color: #0f0f0f; text-decoration: none;
-  padding: 11px; border-radius: 8px; font-size: 13px; font-weight: 600; margin-bottom: 24px;
-}
-.hero-card-features { text-align: left; display: flex; flex-direction: column; gap: 10px; }
-.feature-line { font-size: 12px; color: #666; }
-
-.section-label { font-size: 11px; color: #7c6fcd; letter-spacing: 1px; font-weight: 600; margin-bottom: 10px; }
-.section-title { font-size: 28px; color: #fff; font-weight: 700; margin-bottom: 40px; max-width: 600px; }
-
-.landing-features { max-width: 1280px; margin: 0 auto; padding: 40px 48px 80px; }
-.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-.feature-card {
-  background: #161616; border: 0.5px solid #1f1f1f; border-radius: 12px; padding: 28px;
-}
-.feature-icon { font-size: 28px; margin-bottom: 14px; }
-.feature-card-title { color: #fff; font-size: 16px; font-weight: 600; margin-bottom: 8px; }
-.feature-card-desc { color: #666; font-size: 13px; line-height: 1.6; }
-
-.landing-preview {
-  max-width: 1280px; margin: 0 auto; padding: 40px 48px 80px;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center;
-}
-.preview-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 10px; }
-.preview-list li { color: #888; font-size: 13px; padding-left: 20px; position: relative; }
-.preview-list li::before { content: "✓"; position: absolute; left: 0; color: #3d9e5f; }
-
-.terminal-window { background: #0a0a0a; border: 0.5px solid #2a2a2a; border-radius: 10px; overflow: hidden; }
-.terminal-header { display: flex; align-items: center; gap: 6px; padding: 10px 14px; background: #161616; border-bottom: 0.5px solid #2a2a2a; }
-.dot { width: 10px; height: 10px; border-radius: 50%; }
-.dot.red { background: #e05252; } .dot.yellow { background: #c49b2a; } .dot.green { background: #3d9e5f; }
-.terminal-title { color: #555; font-size: 12px; margin-left: 8px; }
-.terminal-body { padding: 20px; overflow-x: auto; }
-.terminal-body pre { color: #ccc; font-size: 12px; font-family: 'Courier New', monospace; line-height: 1.7; margin: 0; white-space: pre-wrap; word-break: break-word; }
-.t-key { color: #7c6fcd; } .t-str { color: #3d9e5f; } .t-num { color: #c49b2a; }
-
-.landing-cta { max-width: 700px; margin: 0 auto; padding: 60px 48px; text-align: center; }
-.cta-title { font-size: 28px; color: #fff; font-weight: 700; margin-bottom: 10px; }
-.cta-sub { color: #666; font-size: 14px; margin-bottom: 28px; }
-.landing-cta .hero-btn-primary { display: inline-flex; }
-
-.landing-footer { max-width: 1280px; margin: 0 auto; padding: 32px 48px; text-align: center; border-top: 0.5px solid #1a1a1a; }
-.footer-brand-row { display: flex; align-items: center; justify-content: center; gap: 8px; color: #fff; font-weight: 600; margin-bottom: 12px; }
-.footer-links-row { display: flex; justify-content: center; gap: 16px; margin-bottom: 12px; }
-.footer-links-row a { color: #7c6fcd; text-decoration: none; font-size: 13px; }
-.footer-copy-row { color: #444; font-size: 12px; }
-
-@media (max-width: 900px) {
-  .landing-hero, .landing-preview { grid-template-columns: 1fr; }
-  .feature-grid { grid-template-columns: 1fr; }
-  .hero-title { font-size: 32px; }
-  .landing-nav { padding: 20px 24px; }
-  .landing-hero, .landing-features, .landing-preview, .landing-cta, .landing-footer { padding-left: 24px; padding-right: 24px; }
-}
+    @media (max-width: 900px) {
+      .landing-hero, .landing-preview { grid-template-columns: minmax(0, 1fr); }
+      .feature-grid { grid-template-columns: minmax(0, 1fr); }
+      .hero-title { font-size: 32px; }
+      .landing-nav { padding: 20px 24px; }
+      .landing-hero, .landing-features, .landing-preview, .landing-cta, .landing-footer { padding-left: 24px; padding-right: 24px; }
+    }
   </style>
 </head>
 <body>
@@ -778,7 +300,7 @@
     </defs>
   </svg>
 
-    <!-- LOGIN PAGE -->
+  <!-- LOGIN / LANDING PAGE -->
   <div class="login-page" id="loginPage">
 
     <nav class="landing-nav">
@@ -920,11 +442,10 @@
   <!-- APP PAGE -->
   <div class="app-page" id="appPage">
 
-    <!-- NAVBAR -->
     <nav class="navbar">
       <div class="navbar-brand">
         <svg width="36" height="36" class="rl-icon"><use href="#rl-icon"/></svg>
-RecruiterLens
+        RecruiterLens
       </div>
       <div class="navbar-right">
         <img class="user-avatar" id="userAvatar" src="" alt="avatar">
@@ -933,33 +454,19 @@ RecruiterLens
       </div>
     </nav>
 
-    <!-- BODY -->
     <div class="app-body">
 
-      <!-- HERO -->
-      <!-- <div class="hero">
-        <div class="hero-title">Resume Feedback</div>
-        <div class="hero-sub">Upload your resume and get honest recruiter feedback</div>
+      <div class="hero">
+        <div class="hero-title">RecruiterLens</div>
+        <div class="hero-sub">See your resume through a recruiter's eyes</div>
         <div class="hero-badge">✦ AI powered by Groq</div>
-      </div> -->
-      <!-- HERO -->
-<div class="hero">
-  <div class="hero-title">RecruiterLens</div>
-  <div class="hero-sub">See your resume through a recruiter's eyes</div>
-  <div class="hero-badge">✦ AI powered by Groq</div>
-</div>
+      </div>
 
-<!-- TABS -->
-<div class="tabs">
-  <button class="tab active" id="tab1" onclick="switchTab('feedback')">
-    📄 Resume Feedback
-  </button>
-  <button class="tab" id="tab2" onclick="switchTab('jdmatch')">
-    🎯 JD Matcher
-  </button>
-</div>
+      <div class="tabs">
+        <button class="tab active" id="tab1" onclick="switchTab('feedback')">📄 Resume Feedback</button>
+        <button class="tab" id="tab2" onclick="switchTab('jdmatch')">🎯 JD Matcher</button>
+      </div>
 
-      <!-- UPLOAD CARD -->
       <div class="card">
         <div class="card-title">Applying for</div>
         <select class="role-select" id="roleSelect">
@@ -984,33 +491,22 @@ RecruiterLens
         <div class="loading-text" id="loadingText"></div>
       </div>
 
-      <!-- FEEDBACK CARD -->
       <div class="card feedback-section" id="feedbackCard">
         <div class="card-title">Analysis result</div>
-
         <div class="score-wrap">
           <div class="score-number" id="scoreNum">0</div>
           <div class="score-meta">
             <div class="score-label" id="scoreLabel">Analyzing...</div>
-            <div class="score-bar-bg">
-              <div class="score-bar-fill" id="scoreBar" style="width:0%"></div>
-            </div>
+            <div class="score-bar-bg"><div class="score-bar-fill" id="scoreBar" style="width:0%"></div></div>
           </div>
         </div>
-
         <div id="feedbackItems"></div>
       </div>
 
-      <!-- JD MATCHER SECTION -->
-<div class="jd-section" id="jdSection">
-
-  <!-- JD INPUT CARD -->
-  <div class="card">
-    <div class="card-title">Job Description</div>
-    <textarea
-      class="jd-textarea"
-      id="jdInput"
-      placeholder="Paste the job description here...
+      <div class="jd-section" id="jdSection">
+        <div class="card">
+          <div class="card-title">Job Description</div>
+          <textarea class="jd-textarea" id="jdInput" placeholder="Paste the job description here...
 
 Example:
 We are looking for a Frontend Developer with:
@@ -1018,40 +514,27 @@ We are looking for a Frontend Developer with:
 - Knowledge of TypeScript
 - Experience with REST APIs
 - Strong CSS skills"></textarea>
+          <button class="analyze-btn" id="jdBtn" onclick="analyzeJD()">Check My Match</button>
+          <div class="loading-text" id="jdLoadingText"></div>
+        </div>
 
-    <button class="analyze-btn" id="jdBtn" onclick="analyzeJD()">
-      Check My Match
-    </button>
-    <div class="loading-text" id="jdLoadingText"></div>
-  </div>
-
-  <!-- MATCH RESULT CARD -->
-  <div class="card match-result" id="matchResult">
-    <div class="card-title">Match result</div>
-
-    <div class="match-score-wrap">
-      <div class="match-score-num" id="matchScoreNum">0%</div>
-      <div style="flex:1;">
-        <div class="match-label" id="matchLabel">Checking match...</div>
-        <div class="match-bar-bg">
-          <div class="match-bar-fill" id="matchBar" style="width:0%"></div>
+        <div class="card match-result" id="matchResult">
+          <div class="card-title">Match result</div>
+          <div class="match-score-wrap">
+            <div class="match-score-num" id="matchScoreNum">0%</div>
+            <div style="flex:1;">
+              <div class="match-label" id="matchLabel">Checking match...</div>
+              <div class="match-bar-bg"><div class="match-bar-fill" id="matchBar" style="width:0%"></div></div>
+            </div>
+          </div>
+          <div class="card-title">Missing skills</div>
+          <div id="missingSkills"></div>
+          <div class="section-divider"></div>
+          <div class="card-title">Learning roadmap</div>
+          <div id="learningRoadmap"></div>
         </div>
       </div>
-    </div>
 
-    <div class="card-title">Missing skills</div>
-    <div id="missingSkills"></div>
-
-    <div class="section-divider"></div>
-
-    <div class="card-title">Learning roadmap</div>
-    <div id="learningRoadmap"></div>
-  </div>
-
-</div>
-      
-
-      <!-- HISTORY CARD -->
       <div class="card">
         <div class="card-title">Analysis history</div>
         <div id="historyList">
@@ -1059,9 +542,6 @@ We are looking for a Frontend Developer with:
         </div>
       </div>
 
-      
-
-      <!-- FOOTER -->
       <div class="footer">
         <div class="footer-brand">
           <svg width="20" height="20" class="rl-icon"><use href="#rl-icon"/></svg>
@@ -1096,127 +576,101 @@ We are looking for a Frontend Developer with:
     let resumeText = '';
     let currentUser = null;
 
-    // TAB SWITCHING
-function switchTab(tab) {
-  const feedbackSection = document.querySelectorAll('.card:not(.match-result)');
-  const jdSection = document.getElementById('jdSection');
-  const tab1 = document.getElementById('tab1');
-  const tab2 = document.getElementById('tab2');
+    function switchTab(tab) {
+      const jdSection = document.getElementById('jdSection');
+      const tab1 = document.getElementById('tab1');
+      const tab2 = document.getElementById('tab2');
 
-  if (tab === 'feedback') {
-    jdSection.style.display = 'none';
-    document.querySelector('.hero').nextElementSibling.nextElementSibling.style.display = 'block';
-    feedbackCard.style.display = resumeText ? 'block' : 'none';
-    document.querySelector('.card:last-of-type').style.display = 'block';
-    tab1.classList.add('active');
-    tab2.classList.remove('active');
-  } else {
-    jdSection.style.display = 'block';
-    tab1.classList.remove('active');
-    tab2.classList.add('active');
-  }
-}
-
-// JD MATCHER
-async function analyzeJD() {
-  const jdText = document.getElementById('jdInput').value.trim();
-
-  if (!jdText) {
-    alert('Please paste a job description first!');
-    return;
-  }
-
-  if (!resumeText) {
-    alert('Please upload your resume in the Resume Feedback tab first!');
-    return;
-  }
-
-  const jdBtn = document.getElementById('jdBtn');
-  const jdLoadingText = document.getElementById('jdLoadingText');
-  const matchResult = document.getElementById('matchResult');
-
-  jdBtn.innerHTML = 'Analyzing match...';
-  jdBtn.disabled = true;
-  jdLoadingText.innerHTML = '🤖 AI is comparing your resume with job description...';
-
-  try {
-    const response = await fetch('/api/analyze', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        resumeText: resumeText,
-        role: 'JD Match',
-        jdText: jdText,
-        isJDMatch: true
-      })
-    });
-
-    const data = await response.json();
-
-    if (!data.choices || data.choices.length === 0) {
-      throw new Error('No response from AI');
+      if (tab === 'feedback') {
+        jdSection.style.display = 'none';
+        document.querySelector('.hero').nextElementSibling.nextElementSibling.style.display = 'block';
+        feedbackCard.style.display = resumeText ? 'block' : 'none';
+        document.querySelector('.card:last-of-type').style.display = 'block';
+        tab1.classList.add('active');
+        tab2.classList.remove('active');
+      } else {
+        jdSection.style.display = 'block';
+        tab1.classList.remove('active');
+        tab2.classList.add('active');
+      }
     }
 
-    const content = data.choices[0].message.content;
-    const jsonMatch = content.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) throw new Error('AI did not return JSON');
-    const cleanJson = jsonMatch[0].replace(/[\x00-\x1F\x7F]/g, ' ');
-    const result = JSON.parse(cleanJson);
+    async function analyzeJD() {
+      const jdText = document.getElementById('jdInput').value.trim();
+      if (!jdText) { alert('Please paste a job description first!'); return; }
+      if (!resumeText) { alert('Please upload your resume in the Resume Feedback tab first!'); return; }
 
-    jdBtn.innerHTML = '✅ Match complete';
-    jdBtn.style.background = '#1a3a2a';
-    jdBtn.style.color = '#3d9e5f';
-    jdLoadingText.innerHTML = '';
-    matchResult.style.display = 'block';
+      const jdBtn = document.getElementById('jdBtn');
+      const jdLoadingText = document.getElementById('jdLoadingText');
+      const matchResult = document.getElementById('matchResult');
 
-    // Animate match score
-    const target = result.matchScore;
-    const color = target >= 70 ? '#3d9e5f' : target >= 50 ? '#c49b2a' : '#e05252';
-    const matchScoreNum = document.getElementById('matchScoreNum');
-    const matchBar = document.getElementById('matchBar');
-    const matchLabel = document.getElementById('matchLabel');
+      jdBtn.innerHTML = 'Analyzing match...';
+      jdBtn.disabled = true;
+      jdLoadingText.innerHTML = '🤖 AI is comparing your resume with job description...';
 
-    matchScoreNum.style.color = color;
-    matchBar.style.background = color;
-    matchLabel.textContent = target >= 70 ? 'Strong match! 🎉' : target >= 50 ? 'Partial match — improve these skills' : 'Low match — significant gaps found';
+      try {
+        const response = await fetch('/api/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ resumeText, role: 'JD Match', jdText, isJDMatch: true })
+        });
+        const data = await response.json();
+        if (!data.choices || data.choices.length === 0) throw new Error('No response from AI');
 
-    let count = 0;
-    const counter = setInterval(() => {
-      count++;
-      matchScoreNum.textContent = count + '%';
-      matchBar.style.width = count + '%';
-      if (count === target) clearInterval(counter);
-    }, 15);
+        const content = data.choices[0].message.content;
+        const jsonMatch = content.match(/\{[\s\S]*\}/);
+        if (!jsonMatch) throw new Error('AI did not return JSON');
+        const cleanJson = jsonMatch[0].replace(/[\x00-\x1F\x7F]/g, ' ');
+        const result = JSON.parse(cleanJson);
 
-    // Missing skills
-    document.getElementById('missingSkills').innerHTML =
-      result.missingSkills.map(skill => `
-        <div class="feedback-item">
-          <div class="feedback-icon fi-error">✕</div>
-          <div>${skill}</div>
-        </div>`
-      ).join('');
+        jdBtn.innerHTML = '✅ Match complete';
+        jdBtn.style.background = '#1a3a2a';
+        jdBtn.style.color = '#3d9e5f';
+        jdLoadingText.innerHTML = '';
+        matchResult.style.display = 'block';
 
-    // Learning roadmap
-    document.getElementById('learningRoadmap').innerHTML =
-      result.roadmap.map((item, i) => `
-        <div class="roadmap-item">
-          <div class="roadmap-num">${i + 1}</div>
-          <div>${item}</div>
-        </div>`
-      ).join('');
+        const target = result.matchScore;
+        const color = target >= 70 ? '#3d9e5f' : target >= 50 ? '#c49b2a' : '#e05252';
+        const matchScoreNum = document.getElementById('matchScoreNum');
+        const matchBar = document.getElementById('matchBar');
+        const matchLabel = document.getElementById('matchLabel');
 
-  } catch (err) {
-    console.log('JD Match error:', err);
-    jdLoadingText.innerHTML = '⚠️ Something went wrong. Please try again.';
-    jdBtn.innerHTML = 'Check My Match';
-    jdBtn.disabled = false;
-    jdBtn.style.background = '#7c6fcd';
-    jdBtn.style.color = '#fff';
-  }
-}
+        matchScoreNum.style.color = color;
+        matchBar.style.background = color;
+        matchLabel.textContent = target >= 70 ? 'Strong match! 🎉' : target >= 50 ? 'Partial match — improve these skills' : 'Low match — significant gaps found';
 
-    // CHECK AUTH
+        let count = 0;
+        const counter = setInterval(() => {
+          count++;
+          matchScoreNum.textContent = count + '%';
+          matchBar.style.width = count + '%';
+          if (count === target) clearInterval(counter);
+        }, 15);
+
+        document.getElementById('missingSkills').innerHTML =
+          result.missingSkills.map(skill => `
+            <div class="feedback-item">
+              <div class="feedback-icon fi-error">✕</div>
+              <div>${skill}</div>
+            </div>`).join('');
+
+        document.getElementById('learningRoadmap').innerHTML =
+          result.roadmap.map((item, i) => `
+            <div class="roadmap-item">
+              <div class="roadmap-num">${i + 1}</div>
+              <div>${item}</div>
+            </div>`).join('');
+
+      } catch (err) {
+        console.log('JD Match error:', err);
+        jdLoadingText.innerHTML = '⚠️ Something went wrong. Please try again.';
+        jdBtn.innerHTML = 'Check My Match';
+        jdBtn.disabled = false;
+        jdBtn.style.background = '#7c6fcd';
+        jdBtn.style.color = '#fff';
+      }
+    }
+
     function checkAuth() {
       try {
         const urlParams = new URLSearchParams(window.location.search);
@@ -1242,7 +696,7 @@ async function analyzeJD() {
     }
 
     function showLogin() {
-      document.getElementById('loginPage').style.display = 'flex';
+      document.getElementById('loginPage').style.display = 'block';
       document.getElementById('appPage').style.display = 'none';
     }
 
@@ -1260,7 +714,6 @@ async function analyzeJD() {
       showLogin();
     }
 
-    // FILE UPLOAD
     const uploadBox = document.getElementById('uploadBox');
     const fileInput = document.getElementById('fileInput');
     const fileName = document.getElementById('fileName');
@@ -1297,12 +750,8 @@ async function analyzeJD() {
       reader.readAsArrayBuffer(file);
     });
 
-    // ANALYZE
     analyzeBtn.addEventListener('click', async function() {
-      if (!resumeText) {
-        alert('Please upload your resume PDF first!');
-        return;
-      }
+      if (!resumeText) { alert('Please upload your resume PDF first!'); return; }
 
       analyzeBtn.innerHTML = 'Analyzing...';
       analyzeBtn.disabled = true;
@@ -1312,17 +761,10 @@ async function analyzeJD() {
         const response = await fetch('/api/analyze', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            resumeText: resumeText,
-            role: document.getElementById('roleSelect').value
-          })
+          body: JSON.stringify({ resumeText, role: document.getElementById('roleSelect').value })
         });
-
         const data = await response.json();
-
-        if (!data.choices || data.choices.length === 0) {
-          throw new Error('No response from AI');
-        }
+        if (!data.choices || data.choices.length === 0) throw new Error('No response from AI');
 
         const content = data.choices[0].message.content;
         const jsonMatch = content.match(/\{[\s\S]*\}/);
@@ -1330,14 +772,12 @@ async function analyzeJD() {
         const cleanJson = jsonMatch[0].replace(/[\x00-\x1F\x7F]/g, ' ');
         const result = JSON.parse(cleanJson);
 
-        // Show feedback card
         feedbackCard.style.display = 'block';
         analyzeBtn.innerHTML = '✅ Analysis complete';
         analyzeBtn.style.background = '#1a3a2a';
         analyzeBtn.style.color = '#3d9e5f';
         loadingText.innerHTML = '';
 
-        // Animate score
         const target = result.score;
         const color = target >= 70 ? '#3d9e5f' : target >= 50 ? '#c49b2a' : '#e05252';
         scoreNum.style.color = color;
@@ -1352,7 +792,6 @@ async function analyzeJD() {
           if (count === target) clearInterval(counter);
         }, 15);
 
-        // Feedback items
         feedbackItems.innerHTML = result.feedback.map(item => {
           const cls = item.type === 'error' ? 'fi-error' : item.type === 'warning' ? 'fi-warning' : 'fi-success';
           const icon = item.type === 'error' ? '✕' : item.type === 'warning' ? '!' : '✓';
@@ -1362,7 +801,6 @@ async function analyzeJD() {
           </div>`;
         }).join('');
 
-        // Save to database
         if (currentUser) {
           try {
             await fetch(`${BACKEND}/api/save-analysis`, {
@@ -1392,7 +830,6 @@ async function analyzeJD() {
       }
     });
 
-    // LOAD HISTORY
     async function loadHistory() {
       if (!currentUser) return;
       try {
@@ -1406,9 +843,7 @@ async function analyzeJD() {
         }
 
         historyList.innerHTML = data.history.map(item => {
-          const date = new Date(item.created_at).toLocaleDateString('en-IN', {
-            day: 'numeric', month: 'short', year: 'numeric'
-          });
+          const date = new Date(item.created_at).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' });
           const color = item.score >= 70 ? '#3d9e5f' : item.score >= 50 ? '#c49b2a' : '#e05252';
           return `<div class="history-item">
             <div>
@@ -1418,7 +853,6 @@ async function analyzeJD() {
             <div class="history-score" style="color:${color}">${item.score}<span style="font-size:12px; color:#444;">/100</span></div>
           </div>`;
         }).join('');
-
       } catch (err) {
         console.log('History error:', err);
       }
